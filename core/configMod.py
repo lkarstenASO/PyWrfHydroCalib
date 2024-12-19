@@ -7,7 +7,7 @@
 # National Center for Atmospheric Research
 # Research Applications Laboratory
 
-from configparser import SafeConfigParser
+from configparser import ConfigParser
 import os
 import datetime
 import ast
@@ -403,7 +403,7 @@ def readConfig(configFile):
     """
     Generic function to read in data from a configuration file.
     """
-    parser = SafeConfigParser()
+    parser = ConfigParser()
     parser.read(configFile)
     
     jobObj = jobMeta()
@@ -426,7 +426,7 @@ def createJob(argsUser):
         raise Exception()
 
     configPath = argsUser.configFile[0]    
-    parser = SafeConfigParser()
+    parser = ConfigParser()
     
     if os.path.isfile(configPath):
         parser.read(configPath)
@@ -493,7 +493,7 @@ def queryJob(argsUser):
         raise Exception()
 
     configPath = argsUser.configFile[0]    
-    parser = SafeConfigParser()
+    parser = ConfigParser()
     
     if os.path.isfile(configPath):
         parser.read(configPath)
