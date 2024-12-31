@@ -54,6 +54,7 @@ class statusMeta:
         self.nCoresPerNode = []
         self.mpiCmd = []
         self.cpuPinCmd = []
+        self.ldPath = []
         self.sensFlag = []
         self.sensTbl = []
         self.calibFlag = []
