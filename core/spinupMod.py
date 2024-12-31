@@ -501,6 +501,9 @@ def generateBsubScript(jobData,gageID,runDir,gageMeta):
         fileObj.write('#\n')
         fileObj.write('# LSF Batch Script to Run WRF-Hydro Calibration Simulations\n')
         fileObj.write('#\n')
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
             inStr = "#BSUB -P " + str(jobData.acctKey) + '\n'
             fileObj.write(inStr)
@@ -553,6 +556,9 @@ def generatePbsScript(jobData,gageID,runDir,gageMeta):
         fileObj.write('#\n')
         fileObj.write('# PBS Batch Script to Run WH Calibration Simulations\n')
         fileObj.write('#\n')
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
         inStr = "#PBS -N WH_" + str(jobData.jobID) + "_" + str(gageID) + '\n'
         fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
@@ -607,6 +613,9 @@ def generateSlurmScript(jobData,gageID,runDir,gageMeta):
         fileObj.write('#\n')
         fileObj.write('# Slurm Batch Script to Run WH Calibration Simulations\n')
         fileObj.write('#\n')
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
         inStr = '#SBATCH -J WH_' + str(jobData.jobID) + "_" + str(gageID) + '\n'
         fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
@@ -703,6 +712,9 @@ def generateMpiScript(jobData,gageID,basinNum,runDir,gageMeta):
     try:
         fileObj = open(outFile,'w')
         fileObj.write('#!/bin/bash\n')
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
         inStr = 'cd ' + runDir + '\n'
         fileObj.write(inStr)
         if len(jobData.cpuPinCmd) > 0:

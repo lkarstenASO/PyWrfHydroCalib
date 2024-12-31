@@ -30,6 +30,7 @@ class jobMeta:
         self.nCoresMod = []
         self.nNodesMod = []
         self.nCoresPerNode = []
+        self.ldPath = []
         self.sensFlag = []
         self.sensTbl = []
         self.calibFlag = []
@@ -248,6 +249,7 @@ class jobMeta:
         self.nCoresPerNode = int(parser.get('logistics','nCoresPerNode'))
         self.mpiCmd = str(parser.get('logistics','mpiCmd'))
         self.cpuPinCmd = str(parser.get('logistics','cpuPinCmd'))
+        self.ldPath = str(parser.get('logistics','optLDPath'))
         self.nIter = int(parser.get('logistics','numIter'))
         self.sensFlag = int(parser.get('logistics','runSens'))
         self.sensTbl = str(parser.get('logistics','sensParmTbl'))

@@ -1004,6 +1004,9 @@ def generateBsubPreProcScript(jobData,gageID,runDir,workDir,gageMeta,staticData)
             fileObj.write('#\n')
             fileObj.write('# LSF Batch Script to Run WRF-Hydro Calibration R Code\n')
             fileObj.write('#\n')
+            if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
                 inStr = "#BSUB -P " + str(jobData.acctKey) + '\n'
                 fileObj.write(inStr)
@@ -1077,6 +1080,9 @@ def generatePbsPreProcScript(jobData,gageID,runDir,workDir,gageMeta,staticData):
             fileObj.write('#\n')
             fileObj.write('# PBS Batch Script to Run WRF-Hydro Calibration R Code\n')
             fileObj.write('#\n')
+            if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
                 inStr = "#PBS -A " + str(jobData.acctKey) + '\n'
                 fileObj.write(inStr)
@@ -1149,6 +1155,9 @@ def generateSlurmPreProcScript(jobData,gageID,runDir,workDir,gageMeta,staticData
             fileObj.write('#\n')
             fileObj.write('# Slurm Batch Script to Run WRF-Hydro Calibration R Code\n')
             fileObj.write('#\n')
+            if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
                 inStr = "#SBATCH -A " + str(jobData.acctKey) + '\n'
                 fileObj.write(inStr)
@@ -1218,6 +1227,9 @@ def generateMpiPreProcScript(jobData,gageID,runDir,workDir,gageMeta,staticData):
         try:
             fileObj = open(outFile1,'w')
             fileObj.write('#!/bin/bash\n')
+            if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
             inStr = 'cd ' + workDir + '\n'
             fileObj.write(inStr)
             if jobData.jobRunType == 4:
@@ -1296,6 +1308,9 @@ def generateBsubScript(jobData,gageID,runDir,gageMeta,iteration):
         fileObj.write('#\n')
         fileObj.write('# LSF Batch Script to Run WRF-Hydro Calibration Simulations\n')
         fileObj.write('#\n')
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
             inStr = "#BSUB -P " + str(jobData.acctKey) + '\n'
             fileObj.write(inStr)
@@ -1342,6 +1357,9 @@ def generatePbsScript(jobData,gageID,runDir,gageMeta,iteration):
         fileObj.write('#\n')
         inStr = "#PBS -N WHS" + str(jobData.jobID) + str(gageID) + str(iteration) + '\n'
         fileObj.write(inStr)
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
             inStr = "#PBS -A " + str(jobData.acctKey) + '\n'
             fileObj.write(inStr)
@@ -1388,6 +1406,9 @@ def generateSlurmScript(jobData,gageID,runDir,gageMeta,iteration):
         fileObj.write('#\n')
         inStr = '#SBATCH -J WHS_' + str(jobData.jobID) + str(gageID) + str(iteration) + '\n'
         fileObj.write(inStr)
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
             inStr = '#SBATCH -A ' + str(jobData.acctKey) + '\n'
             fileObj.write(inStr)
@@ -1432,6 +1453,9 @@ def generateMpiScript(jobData,gageID,runDir,gageMeta,iteration):
     try:
         fileObj = open(outFile,'w')
         fileObj.write('#!/bin/bash\n')
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
         inStr = 'cd ' + runDir + '\n'
         fileObj.write(inStr)
         if jobData.jobRunType == 4:
@@ -1475,6 +1499,9 @@ def generateBsubPostProcScript(jobData,gageID,runDir,workDir,gageMeta,staticData
             fileObj.write('#\n')
             fileObj.write('# LSF Batch Script to Run WRF-Hydro Calibration R Code\n')
             fileObj.write('#\n')
+            if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
                 inStr = "#BSUB -P " + str(jobData.acctKey) + '\n'
                 fileObj.write(inStr)
@@ -1546,6 +1573,9 @@ def generatePbsPostProcScript(jobData,gageID,runDir,workDir,gageMeta):
             fileObj.write('#\n')
             fileObj.write('# PBS Batch Script to Run WRF-Hydro Calibration R Code\n')
             fileObj.write('#\n')
+            if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
                 inStr = "#PBS -A " + str(jobData.acctKey) + '\n'
                 fileObj.write(inStr)
@@ -1613,6 +1643,9 @@ def generateSlurmPostProcScript(jobData,gageID,runDir,workDir,gageMeta):
             fileObj.write('#\n')
             fileObj.write('# Slurm Batch Script to Run WRF-Hydro Calibration R Code\n')
             fileObj.write('#\n')
+            if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
                 inStr = "#SBATCH -A " + str(jobData.acctKey) + '\n'
                 fileObj.write(inStr)
@@ -1677,6 +1710,9 @@ def generateMpiPostProcScript(jobData,gageID,runDir,workDir,gageMeta):
         try:
             fileObj = open(outFile1,'w')
             fileObj.write('#!/bin/bash\n')
+            if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
             inStr = 'cd ' + workDir + '\n'
             fileObj.write(inStr)
             if jobData.jobRunType == 4:
@@ -1750,6 +1786,9 @@ def generateBsubCollectScript(jobData,gageID,runDir,gageMeta,iteration,workDir):
             fileObj = open(outFile,'w')
             fileObj.write('#!/bin/bash\n')
             fileObj.write('#\n')
+            if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
                 inStr = "#BSUB -P " + str(jobData.acctKey) + '\n'
                 fileObj.write(inStr)
@@ -1829,6 +1868,9 @@ def generatePbsCollectScript(jobData,gageID,runDir,gageMeta,iteration,workDir):
             fileObj = open(outFile,'w')
             fileObj.write('#!/bin/bash\n')
             fileObj.write('#\n')
+            if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
                 inStr = "#PBS -A " + str(jobData.acctKey) + '\n'
                 fileObj.write(inStr)
@@ -1910,6 +1952,9 @@ def generateSlurmCollectScript(jobData,gageID,runDir,gageMeta,iteration,workDir)
             fileObj = open(outFile,'w')
             fileObj.write('#!/bin/bash\n')
             fileObj.write('#\n')
+            if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
                 inStr = "#SBATCH -A " + str(jobData.acctKey) + '\n'
                 fileObj.write(inStr)
@@ -2005,6 +2050,9 @@ def generateMpiCollectScript(jobData,gageID,runDir,gageMeta,iteration,workDir):
         try:
             fileObj = open(outFile,'w')
             fileObj.write('#!/bin/bash\n')
+            if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
             inStr = 'cd ' + runDir + '\n'
             fileObj.write(inStr)
             fileObj.write('Rscript ' + runRProgram + ' ' + runDir + '\n')

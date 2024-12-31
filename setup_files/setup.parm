@@ -107,6 +107,10 @@ mpiCmd = mpiexec -np
 # to specific CPUs.
 cpuPinCmd = 
 
+# Specify an optional LD Library path if there are specific directories you 
+# wish to point submission scripts to.
+optLDPath =
+
 # Specify number of model iterations to calibrate over
 numIter = 3
 

@@ -1412,6 +1412,9 @@ def generateBsubRunScript(jobData,gageID,runDir,gageMeta,modName):
         fileObj.write('#\n')
         fileObj.write('# LSF Batch Script to Run WRF-Hydro Calibration Simulations\n')
         fileObj.write('#\n')
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
             inStr = "#BSUB -P " + str(jobData.acctKey) + '\n'
             fileObj.write(inStr)
@@ -1456,6 +1459,9 @@ def generatePbsRunScript(jobData,gageID,runDir,gageMeta,modName):
         fileObj.write('#\n')
         inStr = "#PBS -N WH_" + str(modName) + "_" + str(jobData.jobID) + "_" + str(gageID) + '\n'
         fileObj.write(inStr)
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
             inStr = "#PBS -A " + str(jobData.acctKey) + '\n'
             fileObj.write(inStr)
@@ -1501,6 +1507,9 @@ def generateSlurmRunScript(jobData,gageID,runDir,gageMeta,modName):
         fileObj.write('#\n')
         inStr = "#SBATCH -J WH_" + str(modName) + "_" + str(jobData.jobID) + "_" + str(gageID) + '\n'
         fileObj.write(inStr)
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
             inStr = "#SBATCH -A " + str(jobData.acctKey) + '\n'
             fileObj.write(inStr)
@@ -1600,6 +1609,9 @@ def generateParmScript(jobData,bestDir,gage,parmInDir,staticData):
     try:
         fileObj = open(outFile,'w')
         fileObj.write('#!/bin/bash\n')
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
         fileObj.write('python ' + pyProgram + ' ' + bestDir + ' ' + parmInDir + ' ' + \
                       ctrlRunDir + ' ' + defaultDir + ' ' + str(staticData.gwBaseFlag) + \
                       ' ' + str(staticData.chnRtOpt) + ' ' + str(staticData.enableMask) + ' \n')
@@ -1634,6 +1646,9 @@ def generateMpiEvalRunScript(jobData,jobID,gageID,runDir,gageMeta,calibWorkDir,v
     try:
         fileObj = open(fileOut,'w')
         fileObj.write('#!/bin/bash\n')
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
         inStr = 'cd ' + validWorkDir + '\n'
         fileObj.write(inStr)
         inStr = "Rscript " + validWorkDir + "/valid_workflow.R " + rScript + "\n"
@@ -1757,6 +1772,9 @@ def generateBsubEvalRunScript(jobData,jobID,gageID,runDir,gageMeta,calibWorkDir,
         fileObj = open(bsubOut,'w')
         fileObj.write('#!/bin/bash\n')
         fileObj.write('#\n')
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
             inStr = "#BSUB -P " + str(jobData.acctKey) + '\n'
             fileObj.write(inStr)
@@ -1873,6 +1891,9 @@ def generatePbsEvalRunScript(jobData,jobID,gageID,runDir,gageMeta,calibWorkDir,v
         fileObj = open(pbsOut,'w')
         fileObj.write('#!/bin/bash\n')
         fileObj.write('#\n')
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
             inStr = "#PBS -A " + str(jobData.acctKey) + '\n'
             fileObj.write(inStr)
@@ -1988,6 +2009,9 @@ def generateSlurmEvalRunScript(jobData,jobID,gageID,runDir,gageMeta,calibWorkDir
         fileObj = open(pbsOut,'w')
         fileObj.write('#!/bin/bash\n')
         fileObj.write('#\n')
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
             inStr = "#SBATCH -A " + str(jobData.acctKey) + '\n'
             fileObj.write(inStr)
@@ -2102,6 +2126,9 @@ def generateBsubParmRunScript(jobData,runDir,gageID):
         fileObj = open(outFile,'w')
         fileObj.write('#!/bin/bash\n')
         fileObj.write('#\n')
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
             inStr = "#BSUB -P " + str(jobData.acctKey) + '\n'
             fileObj.write(inStr)
@@ -2141,6 +2168,9 @@ def generatePbsParmRunScript(jobData,runDir,gageID):
         fileObj = open(outFile,'w')
         fileObj.write('#!/bin/bash\n')
         fileObj.write('#\n')
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
             inStr = "#PBS -A " + str(jobData.acctKey) + '\n'
             fileObj.write(inStr)
@@ -2179,6 +2209,9 @@ def generateSlurmParmRunScript(jobData,runDir,gageID):
         fileObj = open(outFile,'w')
         fileObj.write('#!/bin/bash\n')
         fileObj.write('#\n')
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
             inStr = "#SBATCH -A " + str(jobData.acctKey) + '\n'
             fileObj.write(inStr)
@@ -2216,6 +2249,9 @@ def generateMpiParmRunScript(jobData,runDir,gageID):
     try:
         fileObj = open(outFile,'w')
         fileObj.write('#!/bin/bash\n')
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
         inStr = 'cd ' + runDir + '\n'
         fileObj.write(inStr)
         fileObj.write('./gen_parms.sh\n')
