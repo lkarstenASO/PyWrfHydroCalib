@@ -296,7 +296,7 @@ def runModel(statusData,staticData,db,gageID,gage,keySlot,basinNum,pbsJobId):
             runFlag = False
         else:
             # LOCK file was removed, upgrade status to 0.0 temporarily
-            runStatus = statusMod.walkMod(begDate,endDate,runDir, jobData, basinNum)
+            runStatus = statusMod.walkMod(begDate,endDate,runDir)
             begDate = runStatus[0]
             endDate = runStatus[1]
             runFlag = runStatus[2]
