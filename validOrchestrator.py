@@ -109,6 +109,7 @@ def main(argv):
     jobData.moduleLoadStr = staticData.moduleLoadStr
     jobData.moduleLoadTrouteStr = staticData.moduleLoadTrouteStr
     jobData.ldPath = staticData.ldPath
+    jobData.binPath = staticData.binPath
 
     # Check gages in directory to match what's in the database
     try:

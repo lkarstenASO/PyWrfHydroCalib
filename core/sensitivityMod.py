@@ -1007,6 +1007,9 @@ def generateBsubPreProcScript(jobData,gageID,runDir,workDir,gageMeta,staticData)
             if len(jobData.ldPath.strip()) > 0:
                 inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
                 fileObj.write(inStr)
+            if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
                 inStr = "#BSUB -P " + str(jobData.acctKey) + '\n'
                 fileObj.write(inStr)
@@ -1083,6 +1086,9 @@ def generatePbsPreProcScript(jobData,gageID,runDir,workDir,gageMeta,staticData):
             if len(jobData.ldPath.strip()) > 0:
                 inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
                 fileObj.write(inStr)
+            if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
                 inStr = "#PBS -A " + str(jobData.acctKey) + '\n'
                 fileObj.write(inStr)
@@ -1158,6 +1164,9 @@ def generateSlurmPreProcScript(jobData,gageID,runDir,workDir,gageMeta,staticData
             if len(jobData.ldPath.strip()) > 0:
                 inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
                 fileObj.write(inStr)
+            if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
                 inStr = "#SBATCH -A " + str(jobData.acctKey) + '\n'
                 fileObj.write(inStr)
@@ -1229,6 +1238,9 @@ def generateMpiPreProcScript(jobData,gageID,runDir,workDir,gageMeta,staticData):
             fileObj.write('#!/bin/bash\n')
             if len(jobData.ldPath.strip()) > 0:
                 inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+            if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
                 fileObj.write(inStr)
             inStr = 'cd ' + workDir + '\n'
             fileObj.write(inStr)
@@ -1311,6 +1323,9 @@ def generateBsubScript(jobData,gageID,runDir,gageMeta,iteration):
         if len(jobData.ldPath.strip()) > 0:
                 inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
                 fileObj.write(inStr)
+        if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
             inStr = "#BSUB -P " + str(jobData.acctKey) + '\n'
             fileObj.write(inStr)
@@ -1359,6 +1374,9 @@ def generatePbsScript(jobData,gageID,runDir,gageMeta,iteration):
         fileObj.write(inStr)
         if len(jobData.ldPath.strip()) > 0:
                 inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+        if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
                 fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
             inStr = "#PBS -A " + str(jobData.acctKey) + '\n'
@@ -1409,6 +1427,9 @@ def generateSlurmScript(jobData,gageID,runDir,gageMeta,iteration):
         if len(jobData.ldPath.strip()) > 0:
                 inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
                 fileObj.write(inStr)
+        if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
             inStr = '#SBATCH -A ' + str(jobData.acctKey) + '\n'
             fileObj.write(inStr)
@@ -1456,6 +1477,9 @@ def generateMpiScript(jobData,gageID,runDir,gageMeta,iteration):
         if len(jobData.ldPath.strip()) > 0:
                 inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
                 fileObj.write(inStr)
+        if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
         inStr = 'cd ' + runDir + '\n'
         fileObj.write(inStr)
         if jobData.jobRunType == 4:
@@ -1501,6 +1525,9 @@ def generateBsubPostProcScript(jobData,gageID,runDir,workDir,gageMeta,staticData
             fileObj.write('#\n')
             if len(jobData.ldPath.strip()) > 0:
                 inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+            if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
                 fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
                 inStr = "#BSUB -P " + str(jobData.acctKey) + '\n'
@@ -1576,6 +1603,9 @@ def generatePbsPostProcScript(jobData,gageID,runDir,workDir,gageMeta):
             if len(jobData.ldPath.strip()) > 0:
                 inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
                 fileObj.write(inStr)
+            if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
                 inStr = "#PBS -A " + str(jobData.acctKey) + '\n'
                 fileObj.write(inStr)
@@ -1646,6 +1676,9 @@ def generateSlurmPostProcScript(jobData,gageID,runDir,workDir,gageMeta):
             if len(jobData.ldPath.strip()) > 0:
                 inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
                 fileObj.write(inStr)
+            if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
                 inStr = "#SBATCH -A " + str(jobData.acctKey) + '\n'
                 fileObj.write(inStr)
@@ -1712,6 +1745,9 @@ def generateMpiPostProcScript(jobData,gageID,runDir,workDir,gageMeta):
             fileObj.write('#!/bin/bash\n')
             if len(jobData.ldPath.strip()) > 0:
                 inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+            if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
                 fileObj.write(inStr)
             inStr = 'cd ' + workDir + '\n'
             fileObj.write(inStr)
@@ -1788,6 +1824,9 @@ def generateBsubCollectScript(jobData,gageID,runDir,gageMeta,iteration,workDir):
             fileObj.write('#\n')
             if len(jobData.ldPath.strip()) > 0:
                 inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+            if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
                 fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
                 inStr = "#BSUB -P " + str(jobData.acctKey) + '\n'
@@ -1870,6 +1909,9 @@ def generatePbsCollectScript(jobData,gageID,runDir,gageMeta,iteration,workDir):
             fileObj.write('#\n')
             if len(jobData.ldPath.strip()) > 0:
                 inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+            if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
                 fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
                 inStr = "#PBS -A " + str(jobData.acctKey) + '\n'
@@ -1954,6 +1996,9 @@ def generateSlurmCollectScript(jobData,gageID,runDir,gageMeta,iteration,workDir)
             fileObj.write('#\n')
             if len(jobData.ldPath.strip()) > 0:
                 inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+            if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
                 fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
                 inStr = "#SBATCH -A " + str(jobData.acctKey) + '\n'
@@ -2052,6 +2097,9 @@ def generateMpiCollectScript(jobData,gageID,runDir,gageMeta,iteration,workDir):
             fileObj.write('#!/bin/bash\n')
             if len(jobData.ldPath.strip()) > 0:
                 inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+            if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
                 fileObj.write(inStr)
             inStr = 'cd ' + runDir + '\n'
             fileObj.write(inStr)

@@ -55,6 +55,7 @@ class statusMeta:
         self.mpiCmd = []
         self.cpuPinCmd = []
         self.ldPath = []
+        self.binPath = []
         self.sensFlag = []
         self.sensTbl = []
         self.calibFlag = []

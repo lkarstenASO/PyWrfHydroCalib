@@ -111,6 +111,9 @@ cpuPinCmd =
 # wish to point submission scripts to.
 optLDPath =
 
+# Specify an optional PATH to binaries
+optBinPath =
+
 # Specify number of model iterations to calibrate over
 numIter = 3
 

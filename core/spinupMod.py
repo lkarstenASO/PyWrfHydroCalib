@@ -504,6 +504,9 @@ def generateBsubScript(jobData,gageID,runDir,gageMeta):
         if len(jobData.ldPath.strip()) > 0:
                 inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
                 fileObj.write(inStr)
+        if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
             inStr = "#BSUB -P " + str(jobData.acctKey) + '\n'
             fileObj.write(inStr)
@@ -558,6 +561,9 @@ def generatePbsScript(jobData,gageID,runDir,gageMeta):
         fileObj.write('#\n')
         if len(jobData.ldPath.strip()) > 0:
                 inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+        if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
                 fileObj.write(inStr)
         inStr = "#PBS -N WH_" + str(jobData.jobID) + "_" + str(gageID) + '\n'
         fileObj.write(inStr)
@@ -615,6 +621,9 @@ def generateSlurmScript(jobData,gageID,runDir,gageMeta):
         fileObj.write('#\n')
         if len(jobData.ldPath.strip()) > 0:
                 inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+        if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
                 fileObj.write(inStr)
         inStr = '#SBATCH -J WH_' + str(jobData.jobID) + "_" + str(gageID) + '\n'
         fileObj.write(inStr)
@@ -714,6 +723,9 @@ def generateMpiScript(jobData,gageID,basinNum,runDir,gageMeta):
         fileObj.write('#!/bin/bash\n')
         if len(jobData.ldPath.strip()) > 0:
                 inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+        if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
                 fileObj.write(inStr)
         inStr = 'cd ' + runDir + '\n'
         fileObj.write(inStr)
