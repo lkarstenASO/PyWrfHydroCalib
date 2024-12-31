@@ -25,6 +25,7 @@ def errOut(jobData):
     # passed in by the function will go into the email.
 
     msgContent = jobData.errMsg
+    print(jobData.errMsg)
     
     if jobData.email:
         # Send error email out
@@ -291,6 +292,7 @@ def sendMsg(jobData):
     # for error messages.
     
     msgContent = jobData.genMsg
+    print(jobData.genMsg)
     
     if jobData.email:
         # Send error email out

@@ -2273,7 +2273,9 @@ def submitGroupCalibration(jobData,groupScript,pbsJobId,groupNum):
     if jobData.jobRunType == 3 or jobData.jobRunType == 6:
         try:
             jobTmp = subprocess.check_output(['sbatch',groupScript])
-            pbsJobId[groupNum] = int(jobTmp.decode("UTF-8").split('.')[0])
+            # Specific to SBATCH commands being submitted on AWS
+            pbsJobId[groupNum] = int(jobTmp.decode("UTF-8").split(' ')[3].split('\n')[0])
+            #pbsJobId[groupNum] = int(jobTmp.decode("UTF-8").split('.')[0])
         except:
             jobData.errMsg = "ERROR: Unable to launch: " + groupScript
             raise
