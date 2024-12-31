@@ -790,12 +790,6 @@ def generateCalibGroupScript(jobData,groupNum,scriptPath,topDir):
             fileObj.write('#\n')
             fileObj.write('# PBS Batch Script to Run WRF-Hydro Group Calibrations\n')
             fileObj.write('#\n')
-            if len(jobData.ldPath.strip()) > 0:
-                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
-                fileObj.write(inStr)
-            if len(jobData.binPath.strip()) > 0:
-                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
-                fileObj.write(inStr)
             inStr = '#PBS -N WCG_' + str(jobData.jobID) + '_' + str(groupNum) + '\n'
             fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
@@ -815,6 +809,12 @@ def generateCalibGroupScript(jobData,groupNum,scriptPath,topDir):
                 ":mpiprocs=" + str(jobData.nCoresPerNode) + "\n"
             fileObj.write(inStr)
             fileObj.write("\n")
+            if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+            if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
             fileObj.write('cd ' + topDir + '\n')
             for m in jobData.moduleLoadStr:
                 fileObj.write(m)
@@ -833,12 +833,6 @@ def generateCalibGroupScript(jobData,groupNum,scriptPath,topDir):
             fileObj.write('#\n')
             fileObj.write('# Slurm Batch Script to Run WRF-Hydro Group Calibrations\n')
             fileObj.write('#\n')
-            if len(jobData.ldPath.strip()) > 0:
-                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
-                fileObj.write(inStr)
-            if len(jobData.binPath.strip()) > 0:
-                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
-                fileObj.write(inStr)
             inStr = "#SBATCH -J WCG_" + str(jobData.jobID) + "_" + str(groupNum) + '\n'
             fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
@@ -860,6 +854,12 @@ def generateCalibGroupScript(jobData,groupNum,scriptPath,topDir):
             inStr = "#SBATCH -n " + str(jobData.nCoresMod) + "\n"
             fileObj.write(inStr)
             fileObj.write("\n")
+            if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+            if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
             fileObj.write('cd ' + topDir + '\n')
             for m in jobData.moduleLoadStr:
                 fileObj.write(m)
@@ -919,12 +919,6 @@ def generateSpinupGroupScript(jobData,groupNum,scriptPath,topDir):
             fileObj.write('#\n')
             fileObj.write('# PBS Batch Script to Run WRF-Hydro Group Spinups\n')
             fileObj.write('#\n')
-            if len(jobData.ldPath.strip()) > 0:
-                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
-                fileObj.write(inStr)
-            if len(jobData.binPath.strip()) > 0:
-                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
-                fileObj.write(inStr)
             inStr = '#PBS -N WSG_' + str(jobData.jobID) + '_' + str(groupNum) + '\n'
             fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
@@ -944,6 +938,12 @@ def generateSpinupGroupScript(jobData,groupNum,scriptPath,topDir):
                 ":mpiprocs=" + str(jobData.nCoresPerNode) + "\n"
             fileObj.write(inStr)
             fileObj.write("\n")
+            if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+            if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
             fileObj.write('cd ' + topDir + '\n')
             for m in jobData.moduleLoadStr:
                 fileObj.write(m)
@@ -962,12 +962,6 @@ def generateSpinupGroupScript(jobData,groupNum,scriptPath,topDir):
             fileObj.write('#\n')
             fileObj.write('# Slurm Batch Script to Run WRF-Hydro Group Spinups\n')
             fileObj.write('#\n')
-            if len(jobData.ldPath.strip()) > 0:
-                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
-                fileObj.write(inStr)
-            if len(jobData.binPath.strip()) > 0:
-                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
-                fileObj.write(inStr)
             inStr = "#SBATCH -J WSG_" + str(jobData.jobID) + "_" + str(groupNum) + '\n'
             fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
@@ -989,6 +983,12 @@ def generateSpinupGroupScript(jobData,groupNum,scriptPath,topDir):
             inStr = "#SBATCH -n " + str(jobData.nCoresMod) + "\n"
             fileObj.write(inStr)
             fileObj.write("\n")
+            if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+            if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
             fileObj.write('cd ' + topDir + '\n')
             for m in jobData.moduleLoadStr:
                 fileObj.write(m)
@@ -1048,12 +1048,6 @@ def generateValidGroupScript(jobData,groupNum,scriptPath,valid_type,topDir):
             fileObj.write('#\n')
             fileObj.write('# PBS Batch Script to Run WRF-Hydro Group Validations\n')
             fileObj.write('#\n')
-            if len(jobData.ldPath.strip()) > 0:
-                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
-                fileObj.write(inStr)
-            if len(jobData.binPath.strip()) > 0:
-                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
-                fileObj.write(inStr)
             inStr = '#PBS -N WVG_' + str(jobData.jobID) + '_' + str(groupNum) + '\n'
             fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
@@ -1073,6 +1067,12 @@ def generateValidGroupScript(jobData,groupNum,scriptPath,valid_type,topDir):
                 ":mpiprocs=" + str(jobData.nCoresPerNode) + "\n"
             fileObj.write(inStr)
             fileObj.write("\n")
+            if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+            if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
             fileObj.write('cd ' + topDir + '\n')
             for m in jobData.moduleLoadStr:
                 fileObj.write(m)
@@ -1091,12 +1091,6 @@ def generateValidGroupScript(jobData,groupNum,scriptPath,valid_type,topDir):
             fileObj.write('#\n')
             fileObj.write('# Slurm Batch Script to Run WRF-Hydro Group Validations\n')
             fileObj.write('#\n')
-            if len(jobData.ldPath.strip()) > 0:
-                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
-                fileObj.write(inStr)
-            if len(jobData.binPath.strip()) > 0:
-                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
-                fileObj.write(inStr)
             inStr = "#SBATCH -J WVG_" + str(jobData.jobID) + "_" + str(groupNum) + '\n'
             fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
@@ -1118,6 +1112,12 @@ def generateValidGroupScript(jobData,groupNum,scriptPath,valid_type,topDir):
             inStr = "#SBATCH -n " + str(jobData.nCoresMod) + "\n"
             fileObj.write(inStr)
             fileObj.write("\n")
+            if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+            if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
             fileObj.write('cd ' + topDir + '\n')
             for m in jobData.moduleLoadStr:
                 fileObj.write(m)

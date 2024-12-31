@@ -501,12 +501,6 @@ def generateBsubScript(jobData,gageID,runDir,gageMeta):
         fileObj.write('#\n')
         fileObj.write('# LSF Batch Script to Run WRF-Hydro Calibration Simulations\n')
         fileObj.write('#\n')
-        if len(jobData.ldPath.strip()) > 0:
-                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
-                fileObj.write(inStr)
-        if len(jobData.binPath.strip()) > 0:
-                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
-                fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
             inStr = "#BSUB -P " + str(jobData.acctKey) + '\n'
             fileObj.write(inStr)
@@ -524,6 +518,12 @@ def generateBsubScript(jobData,gageID,runDir,gageMeta):
             inStr = '#BSUB -q ' + str(jobData.queName) + '\n'
             fileObj.write(inStr)
         fileObj.write('\n')
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+        if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
         inStr = 'cd ' + runDir + '\n'
         fileObj.write(inStr)
         fileObj.write('mpirun.lsf ./wrf_hydro.exe\n')
@@ -559,12 +559,6 @@ def generatePbsScript(jobData,gageID,runDir,gageMeta):
         fileObj.write('#\n')
         fileObj.write('# PBS Batch Script to Run WH Calibration Simulations\n')
         fileObj.write('#\n')
-        if len(jobData.ldPath.strip()) > 0:
-                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
-                fileObj.write(inStr)
-        if len(jobData.binPath.strip()) > 0:
-                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
-                fileObj.write(inStr)
         inStr = "#PBS -N WH_" + str(jobData.jobID) + "_" + str(gageID) + '\n'
         fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
@@ -584,6 +578,12 @@ def generatePbsScript(jobData,gageID,runDir,gageMeta):
                 ":mpiprocs=" + str(nCoresPerNode) + "\n"
         fileObj.write(inStr)
         fileObj.write("\n")
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+        if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
         inStr = 'cd ' + runDir + '\n'
         fileObj.write(inStr)
         fileObj.write('mpiexec ./wrf_hydro.exe\n')
@@ -619,12 +619,6 @@ def generateSlurmScript(jobData,gageID,runDir,gageMeta):
         fileObj.write('#\n')
         fileObj.write('# Slurm Batch Script to Run WH Calibration Simulations\n')
         fileObj.write('#\n')
-        if len(jobData.ldPath.strip()) > 0:
-                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
-                fileObj.write(inStr)
-        if len(jobData.binPath.strip()) > 0:
-                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
-                fileObj.write(inStr)
         inStr = '#SBATCH -J WH_' + str(jobData.jobID) + "_" + str(gageID) + '\n'
         fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
@@ -652,6 +646,12 @@ def generateSlurmScript(jobData,gageID,runDir,gageMeta):
             inStr = 'mpirun -n ' + str(jobData.nCoresMod) + ' ./wrf_hydro.exe\n'
         fileObj.write(inStr)
         fileObj.write('\n')
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+        if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
         inStr = 'cd ' + runDir + '\n'
         fileObj.write(inStr)
         inStr = 'rm -rf *.LDASOUT_DOMAIN1\n'

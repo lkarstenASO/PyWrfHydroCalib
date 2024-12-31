@@ -1346,12 +1346,6 @@ def generateRestartBsubScript(jobData,gageID,runDir):
         fileObj.write('#\n')
         fileObj.write('# LSF Batch Script to Run WRF-Hydro Calibration Simulations\n')
         fileObj.write('#\n')
-        if len(jobData.ldPath.strip()) > 0:
-                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
-                fileObj.write(inStr)
-        if len(jobData.binPath.strip()) > 0:
-                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
-                fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
             inStr = "#BSUB -P " + str(jobData.acctKey) + '\n'
             fileObj.write(inStr)
@@ -1369,6 +1363,12 @@ def generateRestartBsubScript(jobData,gageID,runDir):
             inStr = '#BSUB -q ' + str(jobData.queName) + '\n'
             fileObj.write(inStr)
         fileObj.write('\n')
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+        if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
         inStr = 'cd ' + runDir + '\n'
         fileObj.write(inStr)
         fileObj.write('mpirun.lsf ./wrf_hydro.exe\n')
@@ -1396,12 +1396,6 @@ def generateRestartPbsScript(jobData,gageID,runDir):
         fileObj.write('#\n')
         fileObj.write('# PBS Batch Script to Run WRF-Hydro Calibration Simulations\n')
         fileObj.write('#\n')
-        if len(jobData.ldPath.strip()) > 0:
-                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
-                fileObj.write(inStr)
-        if len(jobData.binPath.strip()) > 0:
-                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
-                fileObj.write(inStr)
         inStr = "#PBS -N WH_" + str(jobData.jobID) + "_" + str(gageID) + '\n'
         fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
@@ -1421,6 +1415,12 @@ def generateRestartPbsScript(jobData,gageID,runDir):
                 ":mpiprocs=" + str(nCoresPerNode) + "\n"
         fileObj.write(inStr)
         fileObj.write("\n")
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+        if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
         inStr = 'cd ' + runDir + '\n'
         fileObj.write(inStr)
         fileObj.write('mpiexec ./wrf_hydro.exe\n')
@@ -1448,12 +1448,6 @@ def generateRestartSlurmScript(jobData,gageID,runDir):
         fileObj.write('#\n')
         fileObj.write('# Slurm Batch Script to Run WRF-Hydro Calibration Simulations\n')
         fileObj.write('#\n')
-        if len(jobData.ldPath.strip()) > 0:
-                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
-                fileObj.write(inStr)
-        if len(jobData.binPath.strip()) > 0:
-                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
-                fileObj.write(inStr)
         inStr = "#SBATCH -J WH_" + str(jobData.jobID) + "_" + str(gageID) + '\n'
         fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
@@ -1473,6 +1467,12 @@ def generateRestartSlurmScript(jobData,gageID,runDir):
         inStr = "#SBATCH -n " + str(jobData.nCoresMod) + "\n"
         fileObj.write(inStr)
         fileObj.write("\n")
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+        if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
         inStr = 'cd ' + runDir + '\n'
         fileObj.write(inStr)
         if jobData.jobRunType == 3:
@@ -1550,12 +1550,6 @@ def generateBsubScript(jobData,gageID,runDir):
         fileObj.write('#\n')
         fileObj.write('# LSF Batch Script to Run WRF-Hydro Calibration Simulations\n')
         fileObj.write('#\n')
-        if len(jobData.ldPath.strip()) > 0:
-                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
-                fileObj.write(inStr)
-        if len(jobData.binPath.strip()) > 0:
-                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
-                fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
             inStr = "#BSUB -P " + str(jobData.acctKey) + '\n'
             fileObj.write(inStr)
@@ -1573,6 +1567,12 @@ def generateBsubScript(jobData,gageID,runDir):
             inStr = '#BSUB -q ' + str(jobData.queName) + '\n'
             fileObj.write(inStr)
         fileObj.write('\n')
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+        if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
         inStr = 'cd ' + runDir + '\n'
         fileObj.write(inStr)
         inStr = 'for FILE in HYDRO_RST.*; do if [ ! -L $FILE ] ; then rm -rf $FILE; fi; done\n'
@@ -1603,12 +1603,6 @@ def generatePbsScript(jobData,gageID,runDir):
         fileObj.write('#\n')
         fileObj.write('# PBS Batch Script to Run WRF-Hydro Calibration Simulations\n')
         fileObj.write('#\n')
-        if len(jobData.ldPath.strip()) > 0:
-                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
-                fileObj.write(inStr)
-        if len(jobData.binPath.strip()) > 0:
-                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
-                fileObj.write(inStr)
         inStr = "#PBS -N WH_" + str(jobData.jobID) + "_" + str(gageID) + '\n'
         fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
@@ -1628,6 +1622,12 @@ def generatePbsScript(jobData,gageID,runDir):
                 ":mpiprocs=" + str(nCoresPerNode) + "\n"
         fileObj.write(inStr)
         fileObj.write("\n")
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+        if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
         inStr = 'cd ' + runDir + '\n'
         fileObj.write(inStr)
         inStr = 'for FILE in HYDRO_RST.*; do if [ ! -L $FILE ] ; then rm -rf $FILE; fi; done\n'
@@ -1658,12 +1658,6 @@ def generateSlurmScript(jobData,gageID,runDir):
         fileObj.write('#\n')
         fileObj.write('# Slurm Batch Script to Run WRF-Hydro Calibration Simulations\n')
         fileObj.write('#\n')
-        if len(jobData.ldPath.strip()) > 0:
-                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
-                fileObj.write(inStr)
-        if len(jobData.binPath.strip()) > 0:
-                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
-                fileObj.write(inStr)
         inStr = "#SBATCH -J WH_" + str(jobData.jobID) + "_" + str(gageID) + '\n'
         fileObj.write(inStr)
         if len(jobData.acctKey.strip()) > 0:
@@ -1681,6 +1675,12 @@ def generateSlurmScript(jobData,gageID,runDir):
         inStr = "#SBATCH -N " + str(jobData.nNodesMod) + "\n"
         fileObj.write(inStr)
         fileObj.write("\n")
+        if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+        if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
         inStr = 'cd ' + runDir + '\n'
         fileObj.write(inStr)
         inStr = 'for FILE in HYDRO_RST.*; do if [ ! -L $FILE ] ; then rm -rf $FILE; fi; done\n'
@@ -1860,12 +1860,6 @@ def generateBsubCalibScript(jobData,gageID,runDir,workDir,staticData):
             fileObj.write('#\n')
             fileObj.write('# LSF Batch Script to Run WRF-Hydro Calibration R Code\n')
             fileObj.write('#\n')
-            if len(jobData.ldPath.strip()) > 0:
-                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
-                fileObj.write(inStr)
-            if len(jobData.binPath.strip()) > 0:
-                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
-                fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
                 inStr = "#BSUB -P " + str(jobData.acctKey) + '\n'
                 fileObj.write(inStr)
@@ -1883,6 +1877,12 @@ def generateBsubCalibScript(jobData,gageID,runDir,workDir,staticData):
                 inStr = '#BSUB -q ' + str(jobData.queName) + '\n'
                 fileObj.write(inStr)
             fileObj.write('\n')
+            if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+            if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
             inStr = 'cd ' + workDir + '\n'
             fileObj.write(inStr)
             fileObj.write('./calibCmd.sh\n')
@@ -1940,12 +1940,6 @@ def generatePbsCalibScript(jobData,gageID,runDir,workDir,staticData):
             fileObj.write('#\n')
             fileObj.write('# PBS Batch Script to Run WRF-Hydro Calibration R Code\n')
             fileObj.write('#\n')
-            if len(jobData.ldPath.strip()) > 0:
-                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
-                fileObj.write(inStr)
-            if len(jobData.binPath.strip()) > 0:
-                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
-                fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
                 inStr = "#PBS -A " + str(jobData.acctKey) + '\n'
                 fileObj.write(inStr)
@@ -1963,6 +1957,12 @@ def generatePbsCalibScript(jobData,gageID,runDir,workDir,staticData):
                 inStr = '#PBS -q ' + str(jobData.queName) + '\n'
                 fileObj.write(inStr)
             fileObj.write('\n')
+            if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+            if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
             inStr = 'cd ' + workDir + '\n'
             fileObj.write(inStr)
             fileObj.write('./calibCmd.sh\n')
@@ -2021,12 +2021,6 @@ def generateSlurmCalibScript(jobData,gageID,runDir,workDir,staticData):
             fileObj.write('#\n')
             fileObj.write('# Slurm Batch Script to Run WRF-Hydro Calibration R Code\n')
             fileObj.write('#\n')
-            if len(jobData.ldPath.strip()) > 0:
-                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
-                fileObj.write(inStr)
-            if len(jobData.binPath.strip()) > 0:
-                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
-                fileObj.write(inStr)
             if len(jobData.acctKey.strip()) > 0:
                 inStr = "#SBATCH -A " + str(jobData.acctKey) + '\n'
                 fileObj.write(inStr)
@@ -2044,6 +2038,12 @@ def generateSlurmCalibScript(jobData,gageID,runDir,workDir,staticData):
                 inStr = '#SBATCH -p ' + str(jobData.queName) + '\n'
                 fileObj.write(inStr)
             fileObj.write('\n')
+            if len(jobData.ldPath.strip()) > 0:
+                inStr = "export LD_LIBRARY_PATH=" + jobData.ldPath + ":$LD_LIBRARY_PATH" + '\n'
+                fileObj.write(inStr)
+            if len(jobData.binPath.strip()) > 0:
+                inStr = "export PATH=" + jobData.binPath + ":$PATH" + '\n'
+                fileObj.write(inStr)
             inStr = 'cd ' + workDir + '\n'
             fileObj.write(inStr)
             fileObj.write('./calibCmd.sh\n')
