@@ -706,7 +706,7 @@ def generateMpiScript(jobData,gageID,basinNum,runDir,gageMeta):
         inStr = 'cd ' + runDir + '\n'
         fileObj.write(inStr)
         if len(jobData.cpuPinCmd) > 0:
-            inStr = jobData.mpiCmd + " " + str(jobData.nCoresMod) + " " + jobData.cpuPinCmd + \
+            inStr = jobData.mpiCmd + " " + str(jobData.nCoresMod) + " " + jobData.cpuPinCmd + " " + \
                     str(jobData.gageBegModelCpu[basinNum]) + "-" + \
                     str(jobData.gageEndModelCpu[basinNum]) + " ./W" + \
                     str(jobData.jobID) + str(gageID) + '\n'

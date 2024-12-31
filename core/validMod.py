@@ -1553,7 +1553,7 @@ def generateMpiRunScript(jobData,gageID,basinNum,runDir,gageMeta,modName):
         fileObj.write(inStr)
         if modName == "BEST":
             if len(jobData.cpuPinCmd) > 0:
-                inStr = jobData.mpiCmd + " " + str(jobData.nCoresMod) + " " + jobData.cpuPinCmd + \
+                inStr = jobData.mpiCmd + " " + str(jobData.nCoresMod) + " " + jobData.cpuPinCmd + " " + \
                         str(jobData.gageBegModelCpu[basinNum]) + "-" + \
                         str(jobData.gageEndModelCpu[basinNum]) + " ./WB" + \
                         str(jobData.jobID) + str(gageID) + '\n'
@@ -1562,7 +1562,7 @@ def generateMpiRunScript(jobData,gageID,basinNum,runDir,gageMeta,modName):
                         str(jobData.jobID) + str(gageID) + '\n'
         if modName == "CTRL":
             if len(jobData.cpuPinCmd) > 0:
-                inStr = jobData.mpiCmd + " " + str(jobData.nCoresMod) + " " + jobData.cpuPinCmd + \
+                inStr = jobData.mpiCmd + " " + str(jobData.nCoresMod) + " " + jobData.cpuPinCmd + " " + \
                         str(jobData.gageBegModelCpu[basinNum]) + "-" + \
                         str(jobData.gageEndModelCpu[basinNum]) + " ./WC" + \
                         str(jobData.jobID) + str(gageID) + '\n'
