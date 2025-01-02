@@ -13,7 +13,6 @@ import subprocess
 import time
 import psutil
 import pandas as pd
-import pickle5 as pickle
 from yaml import SafeDumper
 import yaml
 import warnings
