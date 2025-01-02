@@ -111,6 +111,7 @@ def main(argv):
     jobData.trouteCompleteBasin = 0
     jobData.ldPath = staticData.ldPath
     jobData.binPath = staticData.binPath
+    jobData.nCoresPerNode = staticData.nCoresPerNode
     
     # Check gages in directory to match what's in the database
     try:

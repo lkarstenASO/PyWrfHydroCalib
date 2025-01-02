@@ -110,6 +110,7 @@ def main(argv):
     jobData.moduleLoadTrouteStr = staticData.moduleLoadTrouteStr
     jobData.ldPath = staticData.ldPath
     jobData.binPath = staticData.binPath
+    jobData.nCoresPerNode = staticData.nCoresPerNode
 
     # Check gages in directory to match what's in the database
     try:

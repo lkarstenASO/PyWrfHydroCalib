@@ -851,7 +851,7 @@ def generateCalibGroupScript(jobData,groupNum,scriptPath,topDir):
             fileObj.write(inStr)
             inStr = "#SBATCH -N " + str(jobData.nNodesMod) + '\n'
             fileObj.write(inStr)
-            inStr = "#SBATCH -n " + str(jobData.nCoresMod) + "\n"
+            inStr = "#SBATCH -n " + str(jobData.nCoresPerNode) + "\n"
             fileObj.write(inStr)
             fileObj.write("\n")
             if len(jobData.ldPath.strip()) > 0:
@@ -980,7 +980,7 @@ def generateSpinupGroupScript(jobData,groupNum,scriptPath,topDir):
             fileObj.write(inStr)
             inStr = "#SBATCH -N " + str(jobData.nNodesMod) + '\n'
             fileObj.write(inStr)
-            inStr = "#SBATCH -n " + str(jobData.nCoresMod) + "\n"
+            inStr = "#SBATCH -n " + str(jobData.nCoresPerNode) + "\n"
             fileObj.write(inStr)
             fileObj.write("\n")
             if len(jobData.ldPath.strip()) > 0:
@@ -1109,7 +1109,7 @@ def generateValidGroupScript(jobData,groupNum,scriptPath,valid_type,topDir):
             fileObj.write(inStr)
             inStr = "#SBATCH -N " + str(jobData.nNodesMod) + '\n'
             fileObj.write(inStr)
-            inStr = "#SBATCH -n " + str(jobData.nCoresMod) + "\n"
+            inStr = "#SBATCH -n " + str(jobData.nCoresPerNode) + "\n"
             fileObj.write(inStr)
             fileObj.write("\n")
             if len(jobData.ldPath.strip()) > 0:
