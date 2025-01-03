@@ -864,6 +864,7 @@ def generateCalibGroupScript(jobData,groupNum,scriptPath,topDir):
             for m in jobData.moduleLoadStr:
                 fileObj.write(m)
                 fileObj.write("\n")
+            fileObj.write("sudo amazon-linux-extras install R4\n")
             inStr = "python calib.py " + str(jobData.jobID) + " " + str(groupNum) + " --optDbPath " + jobData.dbPath + "\n"
             fileObj.write(inStr)
             fileObj.close()
@@ -1122,6 +1123,7 @@ def generateValidGroupScript(jobData,groupNum,scriptPath,valid_type,topDir):
             for m in jobData.moduleLoadStr:
                 fileObj.write(m)
                 fileObj.write("\n")
+            fileObj.write("sudo amazon-linux-extras install R4\n")
             inStr = "python validation.py " + str(jobData.jobID) + " " + str(groupNum) + " " + str(valid_type) + " --optDbPath " + jobData.dbPath + "\n"
             fileObj.write(inStr)
             fileObj.close()
