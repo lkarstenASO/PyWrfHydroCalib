@@ -676,7 +676,7 @@ if (cyclecount > 0) {
       
       # Update the Objective function versus the parameter variable
       write("Obj function vs. params...", stdout())
-      DT.m1 = melt(x_archive[, setdiff(names(x_archive), metrics_streamflow)], id.vars = c("obj"), measure.vars = setdiff( names(x_archive), c(metrics_streamflow, "iter", "obj")))
+      DT.m1 = reshape2::melt(x_archive[, setdiff(names(x_archive), metrics_streamflow)], id.vars = c("obj"), measure.vars = setdiff( names(x_archive), c(metrics_streamflow, "iter", "obj")))
       DT.m1 <- subset(DT.m1, !is.na(DT.m1$value))
       DT.m1.best <- reshape2::melt(x_archive[iter_best, setdiff(names(x_archive), metrics_streamflow)], id.vars = c("obj"), measure.vars = setdiff( names(x_archive), c(metrics_streamflow, "iter", "obj")))
       gg <- ggplot2::ggplot(DT.m1, ggplot2::aes(value, obj))
@@ -690,7 +690,7 @@ if (cyclecount > 0) {
       
       # Plot the variables as a function of calibration runs
       write("Params over runs...", stdout())
-      DT.m1 = melt(x_archive[, setdiff(names(x_archive), metrics_streamflow)], id.vars = c("iter"), measure.vars = setdiff(names(x_archive), c("iter", metrics_streamflow)))
+      DT.m1 = reshape2::melt(x_archive[, setdiff(names(x_archive), metrics_streamflow)], id.vars = c("iter"), measure.vars = setdiff(names(x_archive), c("iter", metrics_streamflow)))
       DT.m1 <- subset(DT.m1, !is.na(DT.m1$value))
       DT.m1.best = reshape2::melt(x_archive[iter_best, setdiff(names(x_archive), metrics_streamflow)], id.vars = c("iter"), measure.vars = setdiff(names(x_archive), c("iter", metrics_streamflow)))
       gg <- ggplot2::ggplot(DT.m1, ggplot2::aes(iter, value))
@@ -705,7 +705,7 @@ if (cyclecount > 0) {
       write("metrics_streamflow plot...", stdout())
       #DT.m1 = melt(x_archive[,which(names(x_archive) %in% c("iter", "obj", "cor", "rmse", "bias", "nse", "nselog", "nsewt", "kge", "msof"))],
       #            iter.vars = c("iter"), measure.vars = c("obj", "cor", "rmse", "bias", "nse", "nselog", "nsewt", "kge", "msof"))
-      DT.m1 = melt(x_archive[,which(names(x_archive) %in% c("iter", "obj", metrics_streamflow))],
+      DT.m1 = reshape2::melt(x_archive[,which(names(x_archive) %in% c("iter", "obj", metrics_streamflow))],
                    iter.vars = c("iter"), measure.vars = c("obj", metrics_streamflow))
       DT.m1 <- subset(DT.m1, !is.na(DT.m1$value))
       
@@ -740,7 +740,7 @@ if (cyclecount > 0) {
       
       # Update the Objective function versus the parameter variable
       write("Obj function vs. params...", stdout())
-      DT.m1 = melt(x_archive_plot[, setdiff(names(x_archive_plot), metrics_streamflow)], id.vars = c("obj"), measure.vars = setdiff( names(x_archive_plot), c(metrics_streamflow, "iter", "obj")))
+      DT.m1 = reshape2::melt(x_archive_plot[, setdiff(names(x_archive_plot), metrics_streamflow)], id.vars = c("obj"), measure.vars = setdiff( names(x_archive_plot), c(metrics_streamflow, "iter", "obj")))
       DT.m1.best <- reshape2::melt(x_archive[iter_best, setdiff(names(x_archive_plot), metrics_streamflow)], id.vars = c("obj"), measure.vars = setdiff( names(x_archive), c(metrics_streamflow, "iter", "obj")))
       DT.m1 <- subset(DT.m1, !is.na(DT.m1$value))
       gg <- ggplot2::ggplot(DT.m1, ggplot2::aes(value, obj))
@@ -754,7 +754,7 @@ if (cyclecount > 0) {
       
       # Plot the variables as a function of calibration runs
       write("Params over runs...", stdout())
-      DT.m1 = melt(x_archive_plot[, setdiff(names(x_archive_plot), metrics_streamflow)], id.vars = c("iter"), measure.vars = setdiff(names(x_archive_plot), c("iter", metrics_streamflow)))
+      DT.m1 = reshape2::melt(x_archive_plot[, setdiff(names(x_archive_plot), metrics_streamflow)], id.vars = c("iter"), measure.vars = setdiff(names(x_archive_plot), c("iter", metrics_streamflow)))
       DT.m1 <- subset(DT.m1, !is.na(DT.m1$value))
       DT.m1.best = reshape2::melt(x_archive_plot[iter_best, setdiff(names(x_archive_plot), metrics_streamflow)], id.vars = c("iter"), measure.vars = setdiff(names(x_archive_plot), c("iter", metrics_streamflow)))
       
@@ -770,7 +770,7 @@ if (cyclecount > 0) {
       write("metrics_streamflow plot...", stdout())
       #DT.m1 = melt(x_archive_plot[,which(names(x_archive_plot) %in% c("iter", "obj", "cor", "rmse", "bias", "nse", "nselog", "nsewt", "kge", "msof"))],
       #            iter.vars = c("iter"), measure.vars = c("obj", "cor", "rmse", "bias", "nse", "nselog", "nsewt", "kge", "msof"))
-      DT.m1 = melt(x_archive_plot[,which(names(x_archive_plot) %in% c("iter", "obj", metrics_streamflow))],
+      DT.m1 = reshape2::melt(x_archive_plot[,which(names(x_archive_plot) %in% c("iter", "obj", metrics_streamflow))],
                    iter.vars = c("iter"), measure.vars = c("obj", metrics_streamflow))
       DT.m1 <- subset(DT.m1, !is.na(DT.m1$value))
       DT.m1.best = reshape2::melt(x_archive_plot[iter_best,which(names(x_archive_plot) %in% c("iter", "obj", metrics_streamflow))],
@@ -847,7 +847,7 @@ if (cyclecount > 0) {
 
    # Update the Objective function versus the parameter variable
    write("Obj function vs. params...", stdout())
-   DT.m1 = melt(x_archive_snow[, setdiff(names(x_archive_snow), metrics_snow)], id.vars = c("obj"), measure.vars = setdiff( names(x_archive_snow), c(metrics_snow, "iter", "obj")))
+   DT.m1 = reshape2::melt(x_archive_snow[, setdiff(names(x_archive_snow), metrics_snow)], id.vars = c("obj"), measure.vars = setdiff( names(x_archive_snow), c(metrics_snow, "iter", "obj")))
    DT.m1.best <- reshape2::melt(x_archive_snow[iter_best, setdiff(names(x_archive_snow), metrics_snow)], id.vars = c("obj"), measure.vars = setdiff( names(x_archive_snow), c(metrics_snow, "iter", "obj")))
    DT.m1 <- subset(DT.m1, !is.na(DT.m1$value))
    gg <- ggplot2::ggplot(DT.m1, ggplot2::aes(value, obj))
@@ -860,7 +860,7 @@ if (cyclecount > 0) {
 
    # Plot the variables as a function of calibration runs
    write("Params over runs...", stdout())
-   DT.m1 = melt(x_archive_snow[, setdiff(names(x_archive_snow), metrics_snow)], id.vars = c("iter"), measure.vars = setdiff(names(x_archive_snow), c("iter", metrics_snow)))
+   DT.m1 = reshape2::melt(x_archive_snow[, setdiff(names(x_archive_snow), metrics_snow)], id.vars = c("iter"), measure.vars = setdiff(names(x_archive_snow), c("iter", metrics_snow)))
    DT.m1 <- subset(DT.m1, !is.na(DT.m1$value))
    DT.m1.best = reshape2::melt(x_archive_snow[iter_best, setdiff(names(x_archive_snow), metrics_snow)], id.vars = c("iter"), measure.vars = setdiff(names(x_archive_snow), c("iter", metrics_snow)))
 
@@ -874,7 +874,7 @@ if (cyclecount > 0) {
 
    # Plot all the stats
    write("Metrics plot...", stdout())
-   DT.m1 = melt(x_archive_snow[,which(names(x_archive_snow) %in% c("iter", "obj", metrics_snow))],
+   DT.m1 = reshape2::melt(x_archive_snow[,which(names(x_archive_snow) %in% c("iter", "obj", metrics_snow))],
                iter.vars = c("iter"), measure.vars = c("obj", metrics_snow))
    DT.m1 <- subset(DT.m1, !is.na(DT.m1$value))
    DT.m1.best = reshape2::melt(x_archive_snow[iter_best,which(names(x_archive_snow) %in% c("iter", "obj", metrics_snow))],
@@ -951,7 +951,7 @@ if (cyclecount > 0) {
     
     # Update the Objective function versus the parameter variable
     write("Obj function vs. params...", stdout())
-    DT.m1 = melt(x_archive_soilmoisture[, setdiff(names(x_archive_soilmoisture), metrics_soilmoisture)], id.vars = c("obj"), measure.vars = setdiff( names(x_archive_soilmoisture), c(metrics_soilmoisture, "iter", "obj")))
+    DT.m1 = reshape2::melt(x_archive_soilmoisture[, setdiff(names(x_archive_soilmoisture), metrics_soilmoisture)], id.vars = c("obj"), measure.vars = setdiff( names(x_archive_soilmoisture), c(metrics_soilmoisture, "iter", "obj")))
     DT.m1.best <- reshape2::melt(x_archive_soilmoisture[iter_best, setdiff(names(x_archive_soilmoisture), metrics_soilmoisture)], id.vars = c("obj"), measure.vars = setdiff( names(x_archive_soilmoisture), c(metrics_soilmoisture, "iter", "obj")))
     DT.m1 <- subset(DT.m1, !is.na(DT.m1$value))
     gg <- ggplot2::ggplot(DT.m1, ggplot2::aes(value, obj))
@@ -964,7 +964,7 @@ if (cyclecount > 0) {
     
     # Plot the variables as a function of calibration runs
     write("Params over runs...", stdout())
-    DT.m1 = melt(x_archive_soilmoisture[, setdiff(names(x_archive_soilmoisture), metrics_soilmoisture)], id.vars = c("iter"), measure.vars = setdiff(names(x_archive_soilmoisture), c("iter", metrics_soilmoisture)))
+    DT.m1 = reshape2::melt(x_archive_soilmoisture[, setdiff(names(x_archive_soilmoisture), metrics_soilmoisture)], id.vars = c("iter"), measure.vars = setdiff(names(x_archive_soilmoisture), c("iter", metrics_soilmoisture)))
     DT.m1 <- subset(DT.m1, !is.na(DT.m1$value))
     DT.m1.best = reshape2::melt(x_archive_soilmoisture[iter_best, setdiff(names(x_archive_soilmoisture), metrics_soilmoisture)], id.vars = c("iter"), measure.vars = setdiff(names(x_archive_soilmoisture), c("iter", metrics_soilmoisture)))
     
@@ -978,7 +978,7 @@ if (cyclecount > 0) {
     
     # Plot all the stats
     write("Metrics plot...", stdout())
-    DT.m1 = melt(x_archive_soilmoisture[,which(names(x_archive_soilmoisture) %in% c("iter", "obj", metrics_soilmoisture))],
+    DT.m1 = reshape2::melt(x_archive_soilmoisture[,which(names(x_archive_soilmoisture) %in% c("iter", "obj", metrics_soilmoisture))],
                  iter.vars = c("iter"), measure.vars = c("obj", metrics_soilmoisture))
     DT.m1 <- subset(DT.m1, !is.na(DT.m1$value))
     DT.m1.best = reshape2::melt(x_archive_soilmoisture[iter_best,which(names(x_archive_soilmoisture) %in% c("iter", "obj", metrics_soilmoisture))],
