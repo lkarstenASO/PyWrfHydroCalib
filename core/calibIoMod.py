@@ -849,9 +849,15 @@ def generateCalibGroupScript(jobData,groupNum,scriptPath,topDir):
             inStr = "#SBATCH -e " + jobData.jobDir + "/WCG_" + str(jobData.jobID) + "_" + \
                         str(groupNum) + ".err\n"
             fileObj.write(inStr)
-            inStr = "#SBATCH -N " + str(jobData.nNodesMod) + '\n'
+            inStr = "#SBATCH --sockets-per-core=" + str(jobData.nCoresPerNode) + "\n"
             fileObj.write(inStr)
-            inStr = "#SBATCH -n " + str(jobData.nCoresPerNode) + "\n"
+            inStr = "#SBATCH --cores-per-socket=1\n"
+            fileObj.write(inStr)
+            inStr = "#SBATCH --threads-per-core=1\n"
+            fileObj.write(inStr)
+            inStr = "#SBATCH --ntasks-per-node=" + str(jobData.nCoresPerNode) + "\n"
+            fileObj.write(inStr)
+            inStr = "#SBATCH --nodes=" + str(jobData.nNodesMod) + "\n"
             fileObj.write(inStr)
             fileObj.write("\n")
             if len(jobData.ldPath.strip()) > 0:
@@ -979,9 +985,15 @@ def generateSpinupGroupScript(jobData,groupNum,scriptPath,topDir):
             inStr = "#SBATCH -e " + jobData.jobDir + "/WSG_" + str(jobData.jobID) + "_" + \
                         str(groupNum) + ".err\n"
             fileObj.write(inStr)
-            inStr = "#SBATCH -N " + str(jobData.nNodesMod) + '\n'
+            inStr = "#SBATCH --sockets-per-core=" + str(jobData.nCoresPerNode) + "\n"
             fileObj.write(inStr)
-            inStr = "#SBATCH -n " + str(jobData.nCoresPerNode) + "\n"
+            inStr = "#SBATCH --cores-per-socket=1\n"
+            fileObj.write(inStr)
+            inStr = "#SBATCH --threads-per-core=1\n"
+            fileObj.write(inStr)
+            inStr = "#SBATCH --ntasks-per-node=" + str(jobData.nCoresPerNode) + "\n"
+            fileObj.write(inStr)
+            inStr = "#SBATCH --nodes=" + str(jobData.nNodesMod) + "\n"
             fileObj.write(inStr)
             fileObj.write("\n")
             if len(jobData.ldPath.strip()) > 0:
@@ -1108,9 +1120,15 @@ def generateValidGroupScript(jobData,groupNum,scriptPath,valid_type,topDir):
             inStr = "#SBATCH -e " + jobData.jobDir + "/WVG_" + str(jobData.jobID) + "_" + \
                         str(groupNum) + ".err\n"
             fileObj.write(inStr)
-            inStr = "#SBATCH -N " + str(jobData.nNodesMod) + '\n'
+            inStr = "#SBATCH --sockets-per-core=" + str(jobData.nCoresPerNode) + "\n"
             fileObj.write(inStr)
-            inStr = "#SBATCH -n " + str(jobData.nCoresPerNode) + "\n"
+            inStr = "#SBATCH --cores-per-socket=1\n"
+            fileObj.write(inStr)
+            inStr = "#SBATCH --threads-per-core=1\n"
+            fileObj.write(inStr)
+            inStr = "#SBATCH --ntasks-per-node=" + str(jobData.nCoresPerNode) + "\n"
+            fileObj.write(inStr)
+            inStr = "#SBATCH --nodes=" + str(jobData.nNodesMod) + "\n"
             fileObj.write(inStr)
             fileObj.write("\n")
             if len(jobData.ldPath.strip()) > 0:
