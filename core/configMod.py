@@ -15,6 +15,7 @@ import pwd
 import pandas as pd
 import numpy as np
 import math
+import boto3
 #from slacker import Slacker
 
 import warnings
@@ -166,6 +167,9 @@ class jobMeta:
         #self.maskFile = []
         self.enableMultiSites = []
         self.output_channelBucket_influx = []
+        self.s3Client = None
+        self.outBucket = "aso-wrf-hydro"
+        self.s3TopOutDir = "Development/2025_RnD/CA_DWR_Calibration/Output"
 
     def checkGages2(self,db):
         #Function to extract domain ID values based on the SQL command placed into the
@@ -402,6 +406,13 @@ class jobMeta:
         self.cmpdChan = int(parser.get('hydroPhysics','compoundChannel'))
         self.enableGwLoss = int(parser.get('hydroPhysics','enableGwBucketLoss'))
         self.gwLoss = int(parser.get('hydroPhysics','bucket_loss'))
+
+        # Initialize our S3 object
+        try:
+            self.s3Client = boto3.client('s3')
+        except:
+            print("Unable to initialize S3 object")
+            raise Exception()
 
 def readConfig(configFile):
     """

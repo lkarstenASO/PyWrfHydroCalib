@@ -159,6 +159,9 @@ def runModel(statusData,staticData,db,gageID,gage,keySlot,basinNum,iteration,pbs
     except:
         raise
 
+    # Specify our S3 directory to hold calibration output files
+    gageMeta.s3OutDir = staticData.s3TopOutDir + "/" + gage
+
     # Create the shell scripts that will use the MPI command specified by the user to run
     # or restart the model.
     runFile = runDir + "/run_WH.sh"
@@ -530,6 +533,10 @@ def runModel(statusData,staticData,db,gageID,gage,keySlot,basinNum,iteration,pbs
                     errMod.cleanCalib(statusData,workDir,runDir)
                 except:
                     raise
+                # If our S3 object has been initialized - Upload our calibration files for this basin to the bucket
+                if staticData.s3Client is not None:
+                    calibIoMod.calibOutputS3Upload(gage,staticData,gageMeta,workDir)
+
                 print("CALIB/PARAM CODE COMPLETE")
                 keySlot[basinNum,iteration] = 1.0
                 keyStatus = 1.0
