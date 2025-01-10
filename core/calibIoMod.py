@@ -850,13 +850,13 @@ def generateCalibGroupScript(jobData,groupNum,scriptPath,topDir):
             inStr = "#SBATCH -e " + jobData.jobDir + "/WCG_" + str(jobData.jobID) + "_" + \
                         str(groupNum) + ".err\n"
             fileObj.write(inStr)
-            inStr = "#SBATCH --sockets-per-node=" + str(jobData.nCoresPerNode) + "\n"
+            inStr = "#SBATCH --sockets-per-node=" + str(jobData.nCoresPerNode*2) + "\n"
             fileObj.write(inStr)
             inStr = "#SBATCH --cores-per-socket=1\n"
             fileObj.write(inStr)
             inStr = "#SBATCH --threads-per-core=1\n"
             fileObj.write(inStr)
-            inStr = "#SBATCH --ntasks-per-node=" + str(jobData.nCoresPerNode) + "\n"
+            inStr = "#SBATCH --ntasks-per-node=" + str(jobData.nCoresPerNode*2) + "\n"
             fileObj.write(inStr)
             inStr = "#SBATCH --nodes=" + str(jobData.nNodesMod) + "\n"
             fileObj.write(inStr)
@@ -986,13 +986,13 @@ def generateSpinupGroupScript(jobData,groupNum,scriptPath,topDir):
             inStr = "#SBATCH -e " + jobData.jobDir + "/WSG_" + str(jobData.jobID) + "_" + \
                         str(groupNum) + ".err\n"
             fileObj.write(inStr)
-            inStr = "#SBATCH --sockets-per-node=" + str(jobData.nCoresPerNode) + "\n"
+            inStr = "#SBATCH --sockets-per-node=" + str(jobData.nCoresPerNode*2) + "\n"
             fileObj.write(inStr)
             inStr = "#SBATCH --cores-per-socket=1\n"
             fileObj.write(inStr)
             inStr = "#SBATCH --threads-per-core=1\n"
             fileObj.write(inStr)
-            inStr = "#SBATCH --ntasks-per-node=" + str(jobData.nCoresPerNode) + "\n"
+            inStr = "#SBATCH --ntasks-per-node=" + str(jobData.nCoresPerNode*2) + "\n"
             fileObj.write(inStr)
             inStr = "#SBATCH --nodes=" + str(jobData.nNodesMod) + "\n"
             fileObj.write(inStr)
@@ -1121,13 +1121,13 @@ def generateValidGroupScript(jobData,groupNum,scriptPath,valid_type,topDir):
             inStr = "#SBATCH -e " + jobData.jobDir + "/WVG_" + str(jobData.jobID) + "_" + \
                         str(groupNum) + ".err\n"
             fileObj.write(inStr)
-            inStr = "#SBATCH --sockets-per-node=" + str(jobData.nCoresPerNode) + "\n"
+            inStr = "#SBATCH --sockets-per-node=" + str(jobData.nCoresPerNode*2) + "\n"
             fileObj.write(inStr)
             inStr = "#SBATCH --cores-per-socket=1\n"
             fileObj.write(inStr)
             inStr = "#SBATCH --threads-per-core=1\n"
             fileObj.write(inStr)
-            inStr = "#SBATCH --ntasks-per-node=" + str(jobData.nCoresPerNode) + "\n"
+            inStr = "#SBATCH --ntasks-per-node=" + str(jobData.nCoresPerNode*2) + "\n"
             fileObj.write(inStr)
             inStr = "#SBATCH --nodes=" + str(jobData.nNodesMod) + "\n"
             fileObj.write(inStr)
