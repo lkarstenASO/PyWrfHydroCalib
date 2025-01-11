@@ -1191,7 +1191,7 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
     # For now - Keeping this very un-robust as we want to ensure things run. 
     # Upload local files to the cloud. 
     localPath = workDir + "/proj_data.Rdata"
-    cloudPath = gageMeta.s3TopOutDir + "/proj_data.Rdata"
+    cloudPath = gageMeta.s3OutDir + "/proj_data.Rdata"
     if os.path.isfile(localPath):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
@@ -1202,7 +1202,7 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
             return
 
     localPath = workDir + "/chrt.obj.1"
-    cloudPath = gageMeta.s3TopOutDir + "/chrt.obj.1"
+    cloudPath = gageMeta.s3OutDir + "/chrt.obj.1"
     if os.path.isfile(localPath):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
@@ -1213,7 +1213,7 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
             return
 
     localPath = workDir + "/chrt.obj.2"
-    cloudPath = gageMeta.s3TopOutDir + "/chrt.obj.2"
+    cloudPath = gageMeta.s3OutDir + "/chrt.obj.2"
     if os.path.isfile(localPath):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
@@ -1224,7 +1224,7 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
             return
 
     localPath = workDir + "/chrt.obj.3"
-    cloudPath = gageMeta.s3TopOutDir + "/chrt.obj.3"
+    cloudPath = gageMeta.s3OutDir + "/chrt.obj.3"
     if os.path.isfile(localPath):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
@@ -1235,7 +1235,7 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
             return
 
     localPath = workDir + "/FINAL_PARAMETERS/Fulldom.nc"
-    cloudPath = gageMeta.s3TopOutDir + "/FINAL_PARAMETERS/Fulldom.nc"
+    cloudPath = gageMeta.s3OutDir + "/FINAL_PARAMETERS/Fulldom.nc"
     if os.path.isfile(localPath):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
@@ -1246,7 +1246,7 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
             return
 
     localPath = workDir + "/FINAL_PARAMETERS/GWBUCKPARM.nc"
-    cloudPath = gageMeta.s3TopOutDir + "/FINAL_PARAMETERS/GWBUCKPARM.nc"
+    cloudPath = gageMeta.s3OutDir + "/FINAL_PARAMETERS/GWBUCKPARM.nc"
     if os.path.isfile(localPath):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
@@ -1257,7 +1257,7 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
             return
 
     localPath = workDir + "/FINAL_PARAMETERS/HYDRO_TBL_2D.nc"
-    cloudPath = gageMeta.s3TopOutDir + "/FINAL_PARAMETERS/HYDRO_TBL_2D.nc"
+    cloudPath = gageMeta.s3OutDir + "/FINAL_PARAMETERS/HYDRO_TBL_2D.nc"
     if os.path.isfile(localPath):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
@@ -1268,7 +1268,7 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
             return
 
     localPath = workDir + "/FINAL_PARAMETERS/soil_properties.nc"
-    cloudPath = gageMeta.s3TopOutDir + "/FINAL_PARAMETERS/soil_properties.nc"
+    cloudPath = gageMeta.s3OutDir + "/FINAL_PARAMETERS/soil_properties.nc"
     if os.path.isfile(localPath):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
@@ -1279,7 +1279,7 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
             return
 
     localPath = workDir + "/plots/" + gageName + "_calib_run_obj_outlier.png"
-    cloudPath = gageMeta.s3TopOutDir + "/plots/" + gageName + "_calib_run_obj_outlier.png"
+    cloudPath = gageMeta.s3OutDir + "/plots/" + gageName + "_calib_run_obj_outlier.png"
     if os.path.isfile(localPath):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
@@ -1290,7 +1290,7 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
             return
 
     localPath = workDir + "/plots/" + gageName + "_calib_run_obj.png"
-    cloudPath = gageMeta.s3TopOutDir + "/plots/" + gageName + "_calib_run_obj.png"
+    cloudPath = gageMeta.s3OutDir + "/plots/" + gageName + "_calib_run_obj.png"
     if os.path.isfile(localPath):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
@@ -1301,7 +1301,7 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
             return
 
     localPath = workDir + "/plots/" + gageName + "_hydrograph.png"
-    cloudPath = gageMeta.s3TopOutDir + "/plots/" + gageName + "_hydrograph.png"
+    cloudPath = gageMeta.s3OutDir + "/plots/" + gageName + "_hydrograph.png"
     if os.path.isfile(localPath):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
@@ -1312,7 +1312,7 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
             return
 
     localPath = workDir + "/plots/" + gageName + "_hydrogr_log.png"
-    cloudPath = gageMeta.s3TopOutDir + "/plots/" + gageName + "_hydrogr_log.png"
+    cloudPath = gageMeta.s3OutDir + "/plots/" + gageName + "_hydrogr_log.png"
     if os.path.isfile(localPath):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
@@ -1323,7 +1323,7 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
             return
 
     localPath = workDir + "/plots/" + gageName + "_metric_calib_run_outlier.png"
-    cloudPath = gageMeta.s3TopOutDir + "/plots/" + gageName + "_metric_calib_run_outlier.png"
+    cloudPath = gageMeta.s3OutDir + "/plots/" + gageName + "_metric_calib_run_outlier.png"
     if os.path.isfile(localPath):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
@@ -1334,7 +1334,7 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
             return
 
     localPath = workDir + "/plots/" + gageName + "_metric_calib_run.png"
-    cloudPath = gageMeta.s3TopOutDir + "/plots/" + gageName + "_metric_calib_run.png"
+    cloudPath = gageMeta.s3OutDir + "/plots/" + gageName + "_metric_calib_run.png"
     if os.path.isfile(localPath):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
@@ -1345,7 +1345,7 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
             return
 
     localPath = workDir + "/plots/" + gageName + "_obj_vs_parameters_calib_run_outlier.png"
-    cloudPath = gageMeta.s3TopOutDir + "/plots/" + gageName + "_obj_vs_parameters_calib_run_outlier.png"
+    cloudPath = gageMeta.s3OutDir + "/plots/" + gageName + "_obj_vs_parameters_calib_run_outlier.png"
     if os.path.isfile(localPath):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
@@ -1356,7 +1356,7 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
             return
 
     localPath = workDir + "/plots/" + gageName + "_obj_vs_parameters_calib_run.png"
-    cloudPath = gageMeta.s3TopOutDir + "/plots/" + gageName + "_obj_vs_parameters_calib_run.png"
+    cloudPath = gageMeta.s3OutDir + "/plots/" + gageName + "_obj_vs_parameters_calib_run.png"
     if os.path.isfile(localPath):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
@@ -1367,7 +1367,7 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
             return
 
     localPath = workDir + "/plots/" + gageName + "_parameters_calib_run_outlier.png"
-    cloudPath = gageMeta.s3TopOutDir + "/plots/" + gageName + "_parameters_calib_run_outlier.png"
+    cloudPath = gageMeta.s3OutDir + "/plots/" + gageName + "_parameters_calib_run_outlier.png"
     if os.path.isfile(localPath):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
@@ -1378,7 +1378,7 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
             return
 
     localPath = workDir + "/plots/" + gageName + "_parameters_calib_run.png"
-    cloudPath = gageMeta.s3TopOutDir + "/plots/" + gageName + "_parameters_calib_run.png"
+    cloudPath = gageMeta.s3OutDir + "/plots/" + gageName + "_parameters_calib_run.png"
     if os.path.isfile(localPath):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
@@ -1389,7 +1389,7 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
             return
 
     localPath = workDir + "/plots/" + gageName + "_scatter.png"
-    cloudPath = gageMeta.s3TopOutDir + "/plots/" + gageName + "_scatter.png"
+    cloudPath = gageMeta.s3OutDir + "/plots/" + gageName + "_scatter.png"
     if os.path.isfile(localPath):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
