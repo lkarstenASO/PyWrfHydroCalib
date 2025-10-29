@@ -4,7 +4,7 @@ namelistFile <- args[1]
 #mCurrent <- args[2]
 
 #.libPaths("/glade/u/home/adugger/system/R/Libraries/R3.2.2")
-.libPaths("/home/ec2-user/R/x86_64-koji-linux-gnu-library/4.0")
+#.libPaths("/home/ec2-user/R/x86_64-koji-linux-gnu-library/4.0")
 #library(rwrfhydro)
 library(data.table)
 library(ggplot2)

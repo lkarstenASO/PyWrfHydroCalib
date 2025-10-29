@@ -151,6 +151,8 @@ class jobMeta:
         self.cmpdChan = []
         self.enableGwLoss = []
         self.gwLoss = []
+        self.channelLossOpt = []
+        self.lakeOpt = []
         self.gages = []
         self.gageIDs = []
         self.dbPath = []
@@ -406,6 +408,8 @@ class jobMeta:
         self.cmpdChan = int(parser.get('hydroPhysics','compoundChannel'))
         self.enableGwLoss = int(parser.get('hydroPhysics','enableGwBucketLoss'))
         self.gwLoss = int(parser.get('hydroPhysics','bucket_loss'))
+        self.channelLossOpt = int(parser.get('hydroPhysics','channel_loss_opt'))
+        self.lakeOpt = int(parser.get('hydroPhysics','lake_opt'))
 
         # Initialize our S3 object
         try:
@@ -1125,6 +1129,18 @@ def checkConfig(parser):
     if check1 == 0 and check2 == 1:
         print('ERROR: Cannot activate bucket_loss in the namelist if enableGwBucketLoss is off.')
         raise  Exception()
+    
+    # Check our channel loss options
+    check1 = int(parser.get('hydroPhysics','channel_loss_opt'))
+    if check1 < 0 or check1 > 1:
+        print("ERROR: Invalid channel_loss_opt specified in configuration file.")
+        raise Exception()
+    
+    # Check our lake option
+    check1 = int(parser.get('hydroPhysics','lake_opt'))
+    if check1 < 0 or check1 > 3:
+        print('ERROR: Invalid lake_opt option specified in the configuration file.')
+        raise Exception()
 
     # Read in the mask options.
     check1 = int(parser.get('logistics','enableMask'))

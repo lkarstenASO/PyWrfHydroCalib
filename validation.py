@@ -41,7 +41,9 @@ def main(argv):
              'calibration validation simulation for the National Water Model')
     parser.add_argument('jobID',metavar='jobID',type=str,nargs='+',
                         help='Job ID specific to calibration validation.')
-    parser.add_argument('groupNum', metavar='groupNum', type=str, nargs='+',
+    #parser.add_argument('groupNum', metavar='groupNum', type=str, nargs='+',
+    #                    help='Group number associated with basins to calibrate.')
+    parser.add_argument('groupNum', metavar='groupNum', type=str, nargs='?',
                         help='Group number associated with basins to calibrate.')
     parser.add_argument('valid_type', type=str, nargs='+', help='BEST or CTRL valid type to run.')
 
@@ -117,10 +119,11 @@ def main(argv):
         errMod.errOut(jobData)
 
     # Calculate the CPU/group layout for all basins.
-    try:
-        jobData.calcGroupNum()
-    except:
-        errMod.errOut(jobData)
+    if len(args.groupNum[0]) == 0:
+        try:
+            jobData.calcGroupNum()
+        except:
+            errMod.errOut(jobData)
         
     # If the calibration flag is 0, simply exit gracefully as the user specified
     # not to run calibration.
@@ -333,9 +336,9 @@ def main(argv):
             print("PROCESSING BASIN: " + str(basin))
             # Only process basins that are part of this group, per the argument passed into the
             # program.
-            #if jobData.gageGroup[basin] != int(args.groupNum[0]):
-            #    keySlot[basin, :] = 1.0
-            #    continue
+            if jobData.gageGroup[basin] != int(args.groupNum[0]):
+                keySlot[basin, :] = 1.0
+                continue
             # First simulation will be the control simulation with default
             # parameters specified by the user at the beginning of the calibration
             # process.

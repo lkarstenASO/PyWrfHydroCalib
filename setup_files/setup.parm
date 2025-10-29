@@ -451,3 +451,9 @@ enableGwBucketLoss = 0
 # (0: Turn off, 1: Turn on)
 bucket_loss = 0
 
+# Specify our channel loss option
+channel_loss_opt = 0
+
+# Specify our lake pass through option. 
+lake_opt = 0
+
