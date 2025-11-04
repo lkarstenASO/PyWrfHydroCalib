@@ -26,8 +26,6 @@ source(namelistFile)
 #metrics_snow <-  c("cor", "rmse", "bias", "nse", "nselog", "nsewt", "nnsesq","nnse", "kge")
 metrics <- c("cor", "rmse", "bias", "nse", "nselog", "nsewt","nnse","nnsesq","kge", "msof", "hyperResMultiObj", "eventmultiobj","peak_bias","peak_tm_err_hr","event_volume_bias",
              "POD", "FAR", "CSI", "corr1", "lbem", "lbemprime") # Xia 20210610
-metrics <- c("cor", "rmse", "bias", "nse", "nselog", "nsewt","nnse","nnsesq","kge", "msof", "hyperResMultiObj",
-             "corr1", "lbem", "lbemprime")
 metrics_streamflow <- metrics
 event_metrics_daily<-data.table(eventmultiobj=-9999, peak_bias=-9999, peak_tm_err_hr=-9999, event_volume_bias=-9999) # Xia 20210610
 metrics_snow <-  c("cor", "rmse", "bias", "nse", "kge") # Xia 20200610
@@ -332,7 +330,12 @@ if (cyclecount > 0) {
          if (is.na(basinType)) basinType = unique(obsStreamData$basinType)
          if (length(basinType) > 1) print("Basin Type should be unique for a given basin")
 
+         blockedOutList <- list(obj = 0.0, peak_bias = 0.0, peak_tm_err_hr = 0.0, volume_bias = 0.0)
          if (!calcDailyStats) my_exprs3 = quote(list( # Xia 20210610 to use all data with NA included
+            eventmultiobj = blockedOutList[[1]],
+            peak_bias = blockedOutList[[2]],
+            peak_tm_err_hr = blockedOutList[[3]],
+            event_volume_bias = blockedOutList[[4]]
             eventmultiobj = EventMultiObj(q_cms, obs, weight1, weight2, POSIXct, siteId, basinType)[[1]],
             peak_bias = EventMultiObj(q_cms, obs, weight1, weight2, POSIXct, siteId, basinType)[[2]],
             peak_tm_err_hr = EventMultiObj(q_cms, obs, weight1, weight2, POSIXct, siteId, basinType)[[3]],
