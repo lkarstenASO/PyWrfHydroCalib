@@ -403,77 +403,77 @@ def checkBasJob(jobData,gageNum,pbsJobId):
     #            status = False
     #            return status
     
-    if jobData.jobRunType == 3 or jobData.jobRunType == 6:
-        # We are running via slurm
-        csvPath = "./SLURM_" + str(pidUnique) + ".csv"
-        cmd = "squeue -u " + str(jobData.owner) + \
-              ' --format=\"%.18i %.9P %.32j %.8u %.2t %.10M %.6D %R\"' + \
-              ' > ' + csvPath
-        try:
-            subprocess.call(cmd,shell=True)
-        except:
-            jobData.errMsg = "ERROR: Unable to pipe SLURM output to: " + csvPath
-            raise
-    
-        if not os.path.isfile(csvPath):
-            jobData.errMsg = "ERROR: squeue did not create necessary CSV file with job names."
-            raise Exception()
-    
-        try:
-            jobs = pd.read_csv(csvPath,delim_whitespace=True)
-        except:
-            jobData.errMsg = "ERROR: Failure to read in: " + csvPath
-            raise
-    
-        # Delete temporary CSV files.
-        cmdTmp = "rm -rf " + csvPath
-        subprocess.call(cmd,shell=True)
-    
-        # Compile expected job name that the job should occupy.
-        expName = "WH_" + str(jobData.jobID) + "_" + str(jobData.gageIDs[gageNum])
-    
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
-    
-        if len(jobs.NAME) > 0:
-            for jobNum in range(0,len(jobs.NAME)):
-                if jobs.NAME[jobNum].strip() == expName:
-                    print("MODEL SIMULATIONS FOUND")
-                    status = True
-        else:
-            status = False
-    
-        if not status:
-            print("NO MODEL SIMULATIONS FOUND")
+    #if jobData.jobRunType == 3 or jobData.jobRunType == 6:
+    #    # We are running via slurm
+    #    csvPath = "./SLURM_" + str(pidUnique) + ".csv"
+    #    cmd = "squeue -u " + str(jobData.owner) + \
+    #          ' --format=\"%.18i %.9P %.32j %.8u %.2t %.10M %.6D %R\"' + \
+    #          ' > ' + csvPath
+    #    try:
+    #        subprocess.call(cmd,shell=True)
+    #    except:
+    #        jobData.errMsg = "ERROR: Unable to pipe SLURM output to: " + csvPath
+    #        raise
+    #
+    #    if not os.path.isfile(csvPath):
+    #        jobData.errMsg = "ERROR: squeue did not create necessary CSV file with job names."
+    #        raise Exception()
+    #
+    #    try:
+    #        jobs = pd.read_csv(csvPath,delim_whitespace=True)
+    #    except:
+    #        jobData.errMsg = "ERROR: Failure to read in: " + csvPath
+    #        raise
+    #
+    #    # Delete temporary CSV files.
+    #    cmdTmp = "rm -rf " + csvPath
+    #    subprocess.call(cmd,shell=True)
+    #
+    #    # Compile expected job name that the job should occupy.
+    #    expName = "WH_" + str(jobData.jobID) + "_" + str(jobData.gageIDs[gageNum])
+    #
+    #    # Assume no jobs for basin are being ran, unless found in the data frame.
+    #    status = False
+    #
+    #    if len(jobs.NAME) > 0:
+    #        for jobNum in range(0,len(jobs.NAME)):
+    #            if jobs.NAME[jobNum].strip() == expName:
+    #                print("MODEL SIMULATIONS FOUND")
+    #                status = True
+    #    else:
+    #        status = False
+    #
+    #    if not status:
+    #        print("NO MODEL SIMULATIONS FOUND")
             
-    if jobData.jobRunType == 4 or jobData.jobRunType == 5:
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
+    #if jobData.jobRunType == 4 or jobData.jobRunType == 5:
+    # Assume no jobs for basin are being ran, unless found in the data frame.
+    status = False
         
-        pidActive = []
-        exeName = "W" + str(jobData.jobID) + str(jobData.gageIDs[gageNum])
-        for proc in psutil.process_iter():
-            try:
-                if proc.name() == exeName:
-                    pidActive.append(proc.pid)
-            except:
-                print(exeName + " Found, but ended before Python could get the PID.")
-        if len(pidActive) == 0:
+    pidActive = []
+    exeName = "W" + str(jobData.jobID) + str(jobData.gageIDs[gageNum])
+    for proc in psutil.process_iter():
+        try:
+            if proc.name() == exeName:
+                pidActive.append(proc.pid)
+        except:
+            print(exeName + " Found, but ended before Python could get the PID.")
+    if len(pidActive) == 0:
+        status = False
+        print("NO MODEL SIMULATIONS FOUND")
+    else:
+        print("MODEL SIMULATIONS FOUND")
+        # Ensure these are being ran by the proper user.
+        proc_stat_file = os.stat('/proc/%d' % pidActive[0])
+        uid = proc_stat_file.st_uid
+        userCheck = pwd.getpwuid(uid)[0]
+        if userCheck != str(jobData.owner):
+            jobData.errMsg = "ERROR: " + exeName + " is being ran by: " + \
+            userCheck + " When it should be ran by: " + jobData.owner
             status = False
-            print("NO MODEL SIMULATIONS FOUND")
+            raise Exception()
         else:
-            print("MODEL SIMULATIONS FOUND")
-            # Ensure these are being ran by the proper user.
-            proc_stat_file = os.stat('/proc/%d' % pidActive[0])
-            uid = proc_stat_file.st_uid
-            userCheck = pwd.getpwuid(uid)[0]
-            if userCheck != str(jobData.owner):
-                jobData.errMsg = "ERROR: " + exeName + " is being ran by: " + \
-                userCheck + " When it should be ran by: " + jobData.owner
-                status = False
-                raise Exception()
-            else:
-                status = True
+            status = True
             
     return status
    
@@ -667,81 +667,78 @@ def checkCalibJob(jobData,gageNum,pbsJobId):
     #            status = False
     #            return status
     #
-    if jobData.jobRunType == 3 or jobData.jobRunType == 6:
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
-
-        # We are running via slurm
-        csvPath = "./SLURM_" + str(pidUnique) + ".csv"
-        cmd = "squeue -u " + str(jobData.owner) + \
-              ' --format=\"%.18i %.9P %.32j %.8u %.2t %.10M %.6D %R\"' + \
-              ' > ' + csvPath
-        try:
-            subprocess.call(cmd,shell=True)
-        except:
-            jobData.errMsg = "ERROR: Unable to pipe SLURM output to: " + csvPath
-            raise
+    #if jobData.jobRunType == 3 or jobData.jobRunType == 6:
+    #    # We are running via slurm
+    #    csvPath = "./SLURM_" + str(pidUnique) + ".csv"
+    #    cmd = "squeue -u " + str(jobData.owner) + \
+    #          ' --format=\"%.18i %.9P %.32j %.8u %.2t %.10M %.6D %R\"' + \
+    #          ' > ' + csvPath
+    #    try:
+    #        subprocess.call(cmd,shell=True)
+    #    except:
+    #        jobData.errMsg = "ERROR: Unable to pipe SLURM output to: " + csvPath
+    #        raise
+    #
+    #    if not os.path.isfile(csvPath):
+    #        jobData.errMsg = "ERROR: squeue did not create necessary CSV file with job names."
+    #        raise Exception()
+    #
+    #    try:
+    #        jobs = pd.read_csv(csvPath,delim_whitespace=True)
+    #    except:
+    #        jobData.errMsg = "ERROR: Failure to read in: " + csvPath
+    #        raise
+    #
+    #    # Delete temporary CSV files.
+    #    cmdTmp = "rm -rf " + csvPath
+    #    subprocess.call(cmdTmp,shell=True)
+    #
+    #    # Compile expected job name that the job should occupy.
+    #    expName = "WH_CALIB_" + str(jobData.jobID) + "_" + str(jobData.gageIDs[gageNum])
+    #
+    #    # Assume no jobs for basin are being ran, unless found in the data frame.
+    #    status = False
+    #
+    #    if len(jobs.NAME) > 0:
+    #        for jobNum in range(0,len(jobs.NAME)):
+    #            if jobs.NAME[jobNum].strip() == expName:
+    #                print("CALIB JOBS FOUND")
+    #                status = True
+    #    else:
+    #        status = False
+    #
+    #    if not status:
+    #        print("NO CALIB JOBS FOUND")
     
-        if not os.path.isfile(csvPath):
-            jobData.errMsg = "ERROR: squeue did not create necessary CSV file with job names."
-            raise Exception()
-    
-        try:
-            jobs = pd.read_csv(csvPath,delim_whitespace=True)
-        except:
-            jobData.errMsg = "ERROR: Failure to read in: " + csvPath
-            raise
-    
-        # Delete temporary CSV files.
-        cmdTmp = "rm -rf " + csvPath
-        subprocess.call(cmdTmp,shell=True)
-    
-        # Compile expected job name that the job should occupy.
-        expName = "WH_CALIB_" + str(jobData.jobID) + "_" + str(jobData.gageIDs[gageNum])
-    
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
-    
-        if len(jobs.NAME) > 0:
-            for jobNum in range(0,len(jobs.NAME)):
-                if jobs.NAME[jobNum].strip() == expName:
-                    print("CALIB JOBS FOUND")
-                    status = True
-        else:
-            status = False
-    
-        if not status:
-            print("NO CALIB JOBS FOUND")
-    
-    if jobData.jobRunType == 4 or jobData.jobRunType == 5:
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
+    #if jobData.jobRunType == 4 or jobData.jobRunType == 5:
+    # Assume no jobs for basin are being ran, unless found in the data frame.
+    status = False
         
-        # We are running via mpiexec
-        pidActive = []
-        exeName = "C" + str(jobData.jobID) + str(jobData.gageIDs[gageNum])
-        for proc in psutil.process_iter():
-            try:
-                if proc.name() == exeName:
-                    pidActive.append(proc.pid)
-            except:
-                print(exeName + " Found, but ended before Python could get the PID.")
-        if len(pidActive) == 0:
+    # We are running via mpiexec
+    pidActive = []
+    exeName = "C" + str(jobData.jobID) + str(jobData.gageIDs[gageNum])
+    for proc in psutil.process_iter():
+        try:
+            if proc.name() == exeName:
+                pidActive.append(proc.pid)
+        except:
+            print(exeName + " Found, but ended before Python could get the PID.")
+    if len(pidActive) == 0:
+        status = False
+        print("NO CALIB JOBS FOUND")
+    else:
+        print("CALIB JOBS FOUND")
+        # Ensure these are being ran by the proper user.
+        proc_stat_file = os.stat('/proc/%d' % pidActive[0])
+        uid = proc_stat_file.st_uid
+        userCheck = pwd.getpwuid(uid)[0]
+        if userCheck != str(jobData.owner):
+            jobData.errMsg = "ERROR: " + exeName + " is being ran by : " + \
+            userCheck + " When it should be ran by: " + jobData.owner
             status = False
-            print("NO CALIB JOBS FOUND")
+            raise Exception()
         else:
-            print("CALIB JOBS FOUND")
-            # Ensure these are being ran by the proper user.
-            proc_stat_file = os.stat('/proc/%d' % pidActive[0])
-            uid = proc_stat_file.st_uid
-            userCheck = pwd.getpwuid(uid)[0]
-            if userCheck != str(jobData.owner):
-                jobData.errMsg = "ERROR: " + exeName + " is being ran by : " + \
-                userCheck + " When it should be ran by: " + jobData.owner
-                status = False
-                raise Exception()
-            else:
-                status = True
+            status = True
                 
     return status
     
@@ -862,85 +859,82 @@ def checkBasJobValid(jobData,gageNum,modRun,pbsJobId):
     #            status = False
     #            return status
                   
-    if jobData.jobRunType == 3 or jobData.jobRunType == 6:
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
-
-        # We are running via slurm
-        csvPath = "./SLURM_" + str(pidUnique) + ".csv"
-        cmd = "squeue -u " + str(jobData.owner) + \
-              ' --format=\"%.18i %.9P %.32j %.8u %.2t %.10M %.6D %R\"' + \
-              ' > ' + csvPath
-        try:
-            subprocess.call(cmd,shell=True)
-        except:
-            jobData.errMsg = "ERROR: Unable to pipe SLURM output to: " + csvPath
-            raise
-    
-        if not os.path.isfile(csvPath):
-            jobData.errMsg = "ERROR: squeue did not create necessary CSV file with job names."
-            raise Exception()
-    
-        try:
-            jobs = pd.read_csv(csvPath,delim_whitespace=True)
-        except:
-            jobData.errMsg = "ERROR: Failure to read in: " + csvPath
-            raise
-    
-        # Delete temporary CSV files.
-        cmdTmp = "rm -rf " + csvPath
-        subprocess.call(cmd,shell=True)
-    
-        # Compile expected job name that the job should occupy.
-        expName = "WH_" + str(modRun) + '_' + str(jobData.jobID) + "_" + \
-                  str(jobData.gageIDs[gageNum])
-    
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
-    
-        if len(jobs.NAME) > 0:
-            for jobNum in range(0,len(jobs.NAME)):
-                if jobs.NAME[jobNum].strip() == expName:
-                    print("BASIN VALID JOBS FOUND")
-                    status = True
-        else:
-            status = False
-    
-        if not status:
-            print("NO VALID MODEL JOBS FOUND")
+    #if jobData.jobRunType == 3 or jobData.jobRunType == 6:
+    #    # We are running via slurm
+    #    csvPath = "./SLURM_" + str(pidUnique) + ".csv"
+    #    cmd = "squeue -u " + str(jobData.owner) + \
+    #          ' --format=\"%.18i %.9P %.32j %.8u %.2t %.10M %.6D %R\"' + \
+    #          ' > ' + csvPath
+    #    try:
+    #        subprocess.call(cmd,shell=True)
+    #    except:
+    #        jobData.errMsg = "ERROR: Unable to pipe SLURM output to: " + csvPath
+    #        raise
+    #
+    #    if not os.path.isfile(csvPath):
+    #        jobData.errMsg = "ERROR: squeue did not create necessary CSV file with job names."
+    #        raise Exception()
+    #
+    #    try:
+    #        jobs = pd.read_csv(csvPath,delim_whitespace=True)
+    #    except:
+    #        jobData.errMsg = "ERROR: Failure to read in: " + csvPath
+    #        raise
+    #
+    #    # Delete temporary CSV files.
+    #    cmdTmp = "rm -rf " + csvPath
+    #    subprocess.call(cmd,shell=True)
+    #
+    #    # Compile expected job name that the job should occupy.
+    #    expName = "WH_" + str(modRun) + '_' + str(jobData.jobID) + "_" + \
+    #              str(jobData.gageIDs[gageNum])
+    #
+    #    # Assume no jobs for basin are being ran, unless found in the data frame.
+    #    status = False
+    #
+    #    if len(jobs.NAME) > 0:
+    #        for jobNum in range(0,len(jobs.NAME)):
+    #            if jobs.NAME[jobNum].strip() == expName:
+    #                print("BASIN VALID JOBS FOUND")
+    #                status = True
+    #    else:
+    #        status = False
+    #
+    #    if not status:
+    #        print("NO VALID MODEL JOBS FOUND")
                     
-    if jobData.jobRunType == 4 or jobData.jobRunType == 5:
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
+    #if jobData.jobRunType == 4 or jobData.jobRunType == 5:
+    # Assume no jobs for basin are being ran, unless found in the data frame.
+    status = False
         
-        # We are running via mpiexec
-        pidActive = []
-        if modRun == "BEST":
-            exeName = "WB" + str(jobData.jobID) + str(jobData.gageIDs[gageNum])
-        if modRun == "CTRL":
-            exeName = "WC" + str(jobData.jobID) + str(jobData.gageIDs[gageNum])
-        for proc in psutil.process_iter():
-            try:
-                if proc.name() == exeName:
-                    pidActive.append(proc.pid)
-            except:
-                print(exeName + " Found, but ended before Python could get the PID.")
-        if len(pidActive) == 0:
+    # We are running via mpiexec
+    pidActive = []
+    if modRun == "BEST":
+        exeName = "WB" + str(jobData.jobID) + str(jobData.gageIDs[gageNum])
+    if modRun == "CTRL":
+        exeName = "WC" + str(jobData.jobID) + str(jobData.gageIDs[gageNum])
+    for proc in psutil.process_iter():
+        try:
+            if proc.name() == exeName:
+                pidActive.append(proc.pid)
+        except:
+            print(exeName + " Found, but ended before Python could get the PID.")
+    if len(pidActive) == 0:
+        status = False
+        print("NO VALID MODEL JOBS FOUND")
+    else:
+        print("BASIN VALID JOBS FOUND")
+        # Ensure these are being ran by the proper user.
+        proc_stat_file = os.stat('/proc/%d' % pidActive[0])
+        uid = proc_stat_file.st_uid
+        userCheck = pwd.getpwuid(uid)[0]
+        if userCheck != str(jobData.owner):
+            jobData.errMsg = "ERROR: " + exeName + " is being ran by: " + \
+            userCheck + " When it should be ran by: " + jobData.owner
             status = False
-            print("NO VALID MODEL JOBS FOUND")
+            raise Exception()
         else:
-            print("BASIN VALID JOBS FOUND")
-            # Ensure these are being ran by the proper user.
-            proc_stat_file = os.stat('/proc/%d' % pidActive[0])
-            uid = proc_stat_file.st_uid
-            userCheck = pwd.getpwuid(uid)[0]
-            if userCheck != str(jobData.owner):
-                jobData.errMsg = "ERROR: " + exeName + " is being ran by: " + \
-                userCheck + " When it should be ran by: " + jobData.owner
-                status = False
-                raise Exception()
-            else:
-                status = True
+            status = True
                 
     
             
@@ -998,82 +992,79 @@ def checkParmGenJob(jobData,gageNum,pbsJobId):
     #        if len(testDF) != 0:
     #            status = True
                 
-    if jobData.jobRunType == 3 or jobData.jobRunType == 6:
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
-
-        # We are running via slurm
-        csvPath = "./SLURM_" + str(pidUnique) + ".csv"
-        cmd = "squeue -u " + str(jobData.owner) + \
-              ' --format=\"%.18i %.9P %.32j %.8u %.2t %.10M %.6D %R\"' + \
-              ' > ' + csvPath
+    #if jobData.jobRunType == 3 or jobData.jobRunType == 6:
+    #    # We are running via slurm
+    #    csvPath = "./SLURM_" + str(pidUnique) + ".csv"
+    #    cmd = "squeue -u " + str(jobData.owner) + \
+    #          ' --format=\"%.18i %.9P %.32j %.8u %.2t %.10M %.6D %R\"' + \
+    #          ' > ' + csvPath
+    #    try:
+    #        subprocess.call(cmd,shell=True)
+    #    except:
+    #        jobData.errMsg = "ERROR: Unable to pipe SLURM output to: " + csvPath
+    #        raise
+    #
+    #    if not os.path.isfile(csvPath):
+    #        jobData.errMsg = "ERROR: squeue did not create necessary CSV file with job names."
+    #        raise Exception()
+    #
+    #    try:
+    #        jobs = pd.read_csv(csvPath,delim_whitespace=True)
+    #    except:
+    #        jobData.errMsg = "ERROR: Failure to read in: " + csvPath
+    #        raise
+    #
+    #    # Delete temporary CSV files.
+    #    cmdTmp = "rm -rf " + csvPath
+    #    subprocess.call(cmd,shell=True)
+    #
+    #    # Compile expected job name that the job should occupy.
+    #    expName = "WH_PARM_GEN_" + str(jobData.jobID) + "_" + \
+    #              str(jobData.gageIDs[gageNum])
+    #
+    #    # Assume no jobs for basin are being ran, unless found in the data frame.
+    #    status = False
+    #
+    #    if len(jobs.NAME) > 0:
+    #        for jobNum in range(0,len(jobs.NAME)):
+    #            if jobs.NAME[jobNum].strip() == expName:
+    #                print("EVAL JOBS FOUND")
+    #                status = True
+    #    else:
+    #        status = False
+    #
+    #    if not status:
+    #        print("NO EVAL JOBS FOUND")
+        
+    #if jobData.jobRunType == 4 or jobData.jobRunType == 5:
+    # Assume no jobs for basin are being ran, unless found in the data frame.
+    status = False
+        
+    # We are running via mpiexec/mpirun
+    pidActive = []
+    exeName = "P" + str(jobData.jobID) + str(jobData.gageIDs[gageNum])
+    for proc in psutil.process_iter():
         try:
-            subprocess.call(cmd,shell=True)
+            if proc.name() == exeName:
+                pidActive.append(proc.pid)
         except:
-            jobData.errMsg = "ERROR: Unable to pipe SLURM output to: " + csvPath
-            raise
-    
-        if not os.path.isfile(csvPath):
-            jobData.errMsg = "ERROR: squeue did not create necessary CSV file with job names."
+            print(exeName + " Found, but ended before Python could get the PID.")
+    if len(pidActive) == 0:
+        status = False
+        print("NO EVAL JOBS FOUND")
+    else:
+        print("EVAL JOBS FOUND")
+        # Ensure these are being ran by the proper user.
+        proc_stat_file = os.stat('/proc/%d' % pidActive[0])
+        uid = proc_stat_file.st_uid
+        userCheck = pwd.getpwuid(uid)[0]
+        if userCheck != str(jobData.owner):
+            jobData.errMsg = "ERROR: " + exeName + " is being ran by: " + \
+            userCheck + " When it should be ran by: " + jobData.owner
+            status = False
             raise Exception()
-    
-        try:
-            jobs = pd.read_csv(csvPath,delim_whitespace=True)
-        except:
-            jobData.errMsg = "ERROR: Failure to read in: " + csvPath
-            raise
-    
-        # Delete temporary CSV files.
-        cmdTmp = "rm -rf " + csvPath
-        subprocess.call(cmd,shell=True)
-    
-        # Compile expected job name that the job should occupy.
-        expName = "WH_PARM_GEN_" + str(jobData.jobID) + "_" + \
-                  str(jobData.gageIDs[gageNum])
-    
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
-    
-        if len(jobs.NAME) > 0:
-            for jobNum in range(0,len(jobs.NAME)):
-                if jobs.NAME[jobNum].strip() == expName:
-                    print("EVAL JOBS FOUND")
-                    status = True
         else:
-            status = False
-    
-        if not status:
-            print("NO EVAL JOBS FOUND")
-        
-    if jobData.jobRunType == 4 or jobData.jobRunType == 5:
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
-        
-        # We are running via mpiexec/mpirun
-        pidActive = []
-        exeName = "P" + str(jobData.jobID) + str(jobData.gageIDs[gageNum])
-        for proc in psutil.process_iter():
-            try:
-                if proc.name() == exeName:
-                    pidActive.append(proc.pid)
-            except:
-                print(exeName + " Found, but ended before Python could get the PID.")
-        if len(pidActive) == 0:
-            status = False
-            print("NO EVAL JOBS FOUND")
-        else:
-            print("EVAL JOBS FOUND")
-            # Ensure these are being ran by the proper user.
-            proc_stat_file = os.stat('/proc/%d' % pidActive[0])
-            uid = proc_stat_file.st_uid
-            userCheck = pwd.getpwuid(uid)[0]
-            if userCheck != str(jobData.owner):
-                jobData.errMsg = "ERROR: " + exeName + " is being ran by: " + \
-                userCheck + " When it should be ran by: " + jobData.owner
-                status = False
-                raise Exception()
-            else:
-                status = True
+            status = True
                 
     #if jobData.jobRunType == 2:
     #    # We are running via qsub
@@ -1246,82 +1237,79 @@ def checkEvalJob(jobData,gageNum,pbsJobId):
     #            status = False
     #            return status
     #
-    if jobData.jobRunType == 3 or jobData.jobRunType == 6:
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
-        
-        # We are running via slurm
-        csvPath = "./SLURM_" + str(pidUnique) + ".csv"
-        cmd = "squeue -u " + str(jobData.owner) + \
-              ' --format=\"%.18i %.9P %.32j %.8u %.2t %.10M %.6D %R\"' + \
-              ' > ' + csvPath
-        try:
-            subprocess.call(cmd,shell=True)
-        except:
-            jobData.errMsg = "ERROR: Unable to pipe SLURM output to: " + csvPath
-            raise
-    
-        if not os.path.isfile(csvPath):
-            jobData.errMsg = "ERROR: squeue did not create necessary CSV file with job names."
-            raise Exception()
-    
-        try:
-            jobs = pd.read_csv(csvPath,delim_whitespace=True)
-        except:
-            jobData.errMsg = "ERROR: Failure to read in: " + csvPath
-            raise
-    
-        # Delete temporary CSV files.
-        cmdTmp = "rm -rf " + csvPath
-        subprocess.call(cmd,shell=True)
-    
-        # Compile expected job name that the job should occupy.
-        expName = "WH_EVAL_" + str(jobData.jobID) + "_" + \
-                  str(jobData.gageIDs[gageNum])
-    
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
-    
-        if len(jobs.NAME) > 0:
-            for jobNum in range(0,len(jobs.NAME)):
-                if jobs.NAME[jobNum].strip() == expName:
-                    print("EVAL JOBS FOUND")
-                    status = True
-        else:
-            status = False
-    
-        if not status:
-            print("NO EVAL JOBS FOUND")
+    #if jobData.jobRunType == 3 or jobData.jobRunType == 6:
+    #    # We are running via slurm
+    #    csvPath = "./SLURM_" + str(pidUnique) + ".csv"
+    #    cmd = "squeue -u " + str(jobData.owner) + \
+    #          ' --format=\"%.18i %.9P %.32j %.8u %.2t %.10M %.6D %R\"' + \
+    #          ' > ' + csvPath
+    #    try:
+    #        subprocess.call(cmd,shell=True)
+    #    except:
+    #        jobData.errMsg = "ERROR: Unable to pipe SLURM output to: " + csvPath
+    #        raise
+    #
+    #    if not os.path.isfile(csvPath):
+    #        jobData.errMsg = "ERROR: squeue did not create necessary CSV file with job names."
+    #        raise Exception()
+    #
+    #    try:
+    #        jobs = pd.read_csv(csvPath,delim_whitespace=True)
+    #    except:
+    #        jobData.errMsg = "ERROR: Failure to read in: " + csvPath
+    #        raise
+    #
+    #    # Delete temporary CSV files.
+    #    cmdTmp = "rm -rf " + csvPath
+    #    subprocess.call(cmd,shell=True)
+    #
+    #    # Compile expected job name that the job should occupy.
+    #    expName = "WH_EVAL_" + str(jobData.jobID) + "_" + \
+    #              str(jobData.gageIDs[gageNum])
+    #
+    #    # Assume no jobs for basin are being ran, unless found in the data frame.
+    #    status = False
+    #
+    #    if len(jobs.NAME) > 0:
+    #        for jobNum in range(0,len(jobs.NAME)):
+    #            if jobs.NAME[jobNum].strip() == expName:
+    #                print("EVAL JOBS FOUND")
+    #                status = True
+    #    else:
+    #        status = False
+    #
+    #    if not status:
+    #        print("NO EVAL JOBS FOUND")
 
-    if jobData.jobRunType == 4 or jobData.jobRunType == 5:
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
+    #if jobData.jobRunType == 4 or jobData.jobRunType == 5:
+    # Assume no jobs for basin are being ran, unless found in the data frame.
+    status = False
         
-        # We are running via mpiexec
-        pidActive = []
-        exeName = "E" + str(jobData.jobID) + str(jobData.gageIDs[gageNum])
-        for proc in psutil.process_iter():
-            try:
-                if proc.name() == exeName:
-                    pidActive.append(proc.pid)
-            except:
-                print(exeName + " Found, but ended before Python could get the PID.")
-        if len(pidActive) == 0:
+    # We are running via mpiexec
+    pidActive = []
+    exeName = "E" + str(jobData.jobID) + str(jobData.gageIDs[gageNum])
+    for proc in psutil.process_iter():
+        try:
+            if proc.name() == exeName:
+                pidActive.append(proc.pid)
+        except:
+            print(exeName + " Found, but ended before Python could get the PID.")
+    if len(pidActive) == 0:
+        status = False
+        print("NO EVAL JOBS FOUND")
+    else:
+        print("EVAL JOBS FOUND")
+        # Ensure these are being ran by the proper user.
+        proc_stat_file = os.stat('/proc/%d' % pidActive[0])
+        uid = proc_stat_file.st_uid
+        userCheck = pwd.getpwuid(uid)[0]
+        if userCheck != str(jobData.owner):
+            jobData.errMsg = "ERROR: " + exeName + " is being ran by: " + \
+            userCheck + " When it should be ran by: " + jobData.owner
             status = False
-            print("NO EVAL JOBS FOUND")
+            raise Exception()
         else:
-            print("EVAL JOBS FOUND")
-            # Ensure these are being ran by the proper user.
-            proc_stat_file = os.stat('/proc/%d' % pidActive[0])
-            uid = proc_stat_file.st_uid
-            userCheck = pwd.getpwuid(uid)[0]
-            if userCheck != str(jobData.owner):
-                jobData.errMsg = "ERROR: " + exeName + " is being ran by: " + \
-                userCheck + " When it should be ran by: " + jobData.owner
-                status = False
-                raise Exception()
-            else:
-                status = True
+            status = True
             
     return status
 
@@ -1436,77 +1424,74 @@ def checkSensPreProcJob(jobData,gageID,gageNum,pbsJobId):
     #            status = False
     #            return status
                   
-    if jobData.jobRunType == 3 or jobData.jobRunType == 6:
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
-
-        # We are running via slurm
-        csvPath = "./SLURM_" + str(pidUnique) + ".csv"
-        cmd = "squeue -u " + str(jobData.owner) + \
-              ' --format=\"%.18i %.9P %.32j %.8u %.2t %.10M %.6D %R\"' + \
-              ' > ' + csvPath
-        try:
-            subprocess.call(cmd,shell=True)
-        except:
-            jobData.errMsg = "ERROR: Unable to pipe SLURM output to: " + csvPath
-            raise
-    
-        if not os.path.isfile(csvPath):
-            jobData.errMsg = "ERROR: squeue did not create necessary CSV file with job names."
-            raise Exception()
-    
-        try:
-            jobs = pd.read_csv(csvPath,delim_whitespace=True)
-        except:
-            jobData.errMsg = "ERROR: Failure to read in: " + csvPath
-            raise
-    
-        # Delete temporary CSV files.
-        cmdTmp = "rm -rf " + csvPath
-        subprocess.call(cmd,shell=True)
-    
-        # Compile expected job name that the job should occupy.
-        expName = "WH_SENS_PREPROC_" + str(jobData.jobID) + "_" + \
-                  str(gageID)
-    
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
-    
-        if len(jobs.NAME) > 0:
-            for jobNum in range(0,len(jobs.NAME)):
-                if jobs.NAME[jobNum].strip() == expName:
-                    status = True
-        else:
-            status = False
-    
-    if jobData.jobRunType == 4 or jobData.jobRunType == 5:
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
+    #if jobData.jobRunType == 3 or jobData.jobRunType == 6:
+    #    # We are running via slurm
+    #    csvPath = "./SLURM_" + str(pidUnique) + ".csv"
+    #    cmd = "squeue -u " + str(jobData.owner) + \
+    #          ' --format=\"%.18i %.9P %.32j %.8u %.2t %.10M %.6D %R\"' + \
+    #          ' > ' + csvPath
+    #    try:
+    #        subprocess.call(cmd,shell=True)
+    #    except:
+    #        jobData.errMsg = "ERROR: Unable to pipe SLURM output to: " + csvPath
+    #        raise
+    #
+    #    if not os.path.isfile(csvPath):
+    #        jobData.errMsg = "ERROR: squeue did not create necessary CSV file with job names."
+    #        raise Exception()
+    #
+    #    try:
+    #        jobs = pd.read_csv(csvPath,delim_whitespace=True)
+    #    except:
+    #        jobData.errMsg = "ERROR: Failure to read in: " + csvPath
+    #        raise
+    #
+    #    # Delete temporary CSV files.
+    #    cmdTmp = "rm -rf " + csvPath
+    #    subprocess.call(cmd,shell=True)
+    #
+    #    # Compile expected job name that the job should occupy.
+    #    expName = "WH_SENS_PREPROC_" + str(jobData.jobID) + "_" + \
+    #              str(gageID)
+    #
+    #    # Assume no jobs for basin are being ran, unless found in the data frame.
+    #    status = False
+    #
+    #    if len(jobs.NAME) > 0:
+    #        for jobNum in range(0,len(jobs.NAME)):
+    #            if jobs.NAME[jobNum].strip() == expName:
+    #                status = True
+    #    else:
+    #        status = False
+    #
+    #if jobData.jobRunType == 4 or jobData.jobRunType == 5:
+    # Assume no jobs for basin are being ran, unless found in the data frame.
+    status = False
         
-        # We are running via mpiexec
-        pidActive = []
-        exeName = "SPRE" + str(jobData.jobID) + str(gageID)
-        print(exeName)
-        for proc in psutil.process_iter():
-            try:
-                if proc.name() == exeName:
-                    pidActive.append(proc.pid)
-            except:
-                print(exeName + " Found, but ended before Python could get the PID.")
-        if len(pidActive) == 0:
+    # We are running via mpiexec
+    pidActive = []
+    exeName = "SPRE" + str(jobData.jobID) + str(gageID)
+    print(exeName)
+    for proc in psutil.process_iter():
+        try:
+            if proc.name() == exeName:
+                pidActive.append(proc.pid)
+        except:
+            print(exeName + " Found, but ended before Python could get the PID.")
+    if len(pidActive) == 0:
+        status = False
+    else:
+        # Ensure these are being ran by the proper user.
+        proc_stat_file = os.stat('/proc/%d' % pidActive[0])
+        uid = proc_stat_file.st_uid
+        userCheck = pwd.getpwuid(uid)[0]
+        if userCheck != str(jobData.owner):
+            jobData.errMsg = "ERROR: " + exeName + " is being ran by: " + \
+            userCheck + " When it should be ran by: " + jobData.owner
             status = False
+            raise Exception()
         else:
-            # Ensure these are being ran by the proper user.
-            proc_stat_file = os.stat('/proc/%d' % pidActive[0])
-            uid = proc_stat_file.st_uid
-            userCheck = pwd.getpwuid(uid)[0]
-            if userCheck != str(jobData.owner):
-                jobData.errMsg = "ERROR: " + exeName + " is being ran by: " + \
-                userCheck + " When it should be ran by: " + jobData.owner
-                status = False
-                raise Exception()
-            else:
-                status = True
+            status = True
             
     return status
 
@@ -1621,76 +1606,73 @@ def checkSensPostProcJob(jobData,gageID,gageNum,pbsJobId):
     #            status = False
     #            return status
             
-    if jobData.jobRunType == 3 or jobData.jobRunType == 6:
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
-
-        # We are running via slurm
-        csvPath = "./SLURM_" + str(pidUnique) + ".csv"
-        cmd = "squeue -u " + str(jobData.owner) + \
-              ' --format=\"%.18i %.9P %.32j %.8u %.2t %.10M %.6D %R\"' + \
-              ' > ' + csvPath
+    #if jobData.jobRunType == 3 or jobData.jobRunType == 6:
+    #    # We are running via slurm
+    #    csvPath = "./SLURM_" + str(pidUnique) + ".csv"
+    #    cmd = "squeue -u " + str(jobData.owner) + \
+    #          ' --format=\"%.18i %.9P %.32j %.8u %.2t %.10M %.6D %R\"' + \
+    #          ' > ' + csvPath
+    #    try:
+    #        subprocess.call(cmd,shell=True)
+    #    except:
+    #        jobData.errMsg = "ERROR: Unable to pipe SLURM output to: " + csvPath
+    #        raise
+    #
+    #    if not os.path.isfile(csvPath):
+    #        jobData.errMsg = "ERROR: squeue did not create necessary CSV file with job names."
+    #        raise Exception()
+    #
+    #    try:
+    #        jobs = pd.read_csv(csvPath,delim_whitespace=True)
+    #    except:
+    #        jobData.errMsg = "ERROR: Failure to read in: " + csvPath
+    #        raise
+    #
+    #    # Delete temporary CSV files.
+    #    cmdTmp = "rm -rf " + csvPath
+    #    subprocess.call(cmd,shell=True)
+    #
+    #    # Compile expected job name that the job should occupy.
+    #    expName = "WH_SENS_POSTPROC_" + str(jobData.jobID) + "_" + \
+    #              str(gageID)
+    #
+    #    # Assume no jobs for basin are being ran, unless found in the data frame.
+    #    status = False
+    #
+    #    if len(jobs.NAME) > 0:
+    #        for jobNum in range(0,len(jobs.NAME)):
+    #            if jobs.NAME[jobNum].strip() == expName:
+    #                status = True
+    #    else:
+    #        status = False
+        
+    #if jobData.jobRunType == 4 or jobData.jobRunType == 5:
+    # Assume no jobs for basin are being ran, unless found in the data frame.
+    status = False
+        
+    # We are running via mpiexec
+    pidActive = []
+    exeName = "SPOS" + str(jobData.jobID) + str(gageID)
+    for proc in psutil.process_iter():
         try:
-            subprocess.call(cmd,shell=True)
+            if proc.name() == exeName:
+                pidActive.append(proc.pid)
         except:
-            jobData.errMsg = "ERROR: Unable to pipe SLURM output to: " + csvPath
-            raise
-    
-        if not os.path.isfile(csvPath):
-            jobData.errMsg = "ERROR: squeue did not create necessary CSV file with job names."
+            print(exeName + " Found, but ended before Python could get the PID.")
+    if len(pidActive) == 0:
+        status = False
+    else:
+        # Ensure these are being ran by the proper user.
+        proc_stat_file = os.stat('/proc/%d' % pidActive[0])
+        uid = proc_stat_file.st_uid
+        userCheck = pwd.getpwuid(uid)[0]
+        if userCheck != str(jobData.owner):
+            jobData.errMsg = "ERROR: " + exeName + " is being ran by: " + \
+            userCheck + " When it should be ran by: " + jobData.owner
+            status = False
             raise Exception()
-    
-        try:
-            jobs = pd.read_csv(csvPath,delim_whitespace=True)
-        except:
-            jobData.errMsg = "ERROR: Failure to read in: " + csvPath
-            raise
-    
-        # Delete temporary CSV files.
-        cmdTmp = "rm -rf " + csvPath
-        subprocess.call(cmd,shell=True)
-    
-        # Compile expected job name that the job should occupy.
-        expName = "WH_SENS_POSTPROC_" + str(jobData.jobID) + "_" + \
-                  str(gageID)
-    
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
-    
-        if len(jobs.NAME) > 0:
-            for jobNum in range(0,len(jobs.NAME)):
-                if jobs.NAME[jobNum].strip() == expName:
-                    status = True
         else:
-            status = False
-        
-    if jobData.jobRunType == 4 or jobData.jobRunType == 5:
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
-        
-        # We are running via mpiexec
-        pidActive = []
-        exeName = "SPOS" + str(jobData.jobID) + str(gageID)
-        for proc in psutil.process_iter():
-            try:
-                if proc.name() == exeName:
-                    pidActive.append(proc.pid)
-            except:
-                print(exeName + " Found, but ended before Python could get the PID.")
-        if len(pidActive) == 0:
-            status = False
-        else:
-            # Ensure these are being ran by the proper user.
-            proc_stat_file = os.stat('/proc/%d' % pidActive[0])
-            uid = proc_stat_file.st_uid
-            userCheck = pwd.getpwuid(uid)[0]
-            if userCheck != str(jobData.owner):
-                jobData.errMsg = "ERROR: " + exeName + " is being ran by: " + \
-                userCheck + " When it should be ran by: " + jobData.owner
-                status = False
-                raise Exception()
-            else:
-                status = True
+            status = True
     
     return status
 
@@ -1809,81 +1791,78 @@ def checkBasSensJob(jobData,gageNum,iteration,runDir,pbsJobId):
     #            status = False
     #            return status
     
-    if jobData.jobRunType == 3 or jobData.jobRunType == 6:
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
-
-        # We are running via slurm
-        csvPath = "./SLURM_" + str(pidUnique) + ".csv"
-        cmd = "squeue -u " + str(jobData.owner) + \
-              ' --format=\"%.18i %.9P %.32j %.8u %.2t %.10M %.6D %R\"' + \
-              ' > ' + csvPath
-        try:
-            subprocess.call(cmd,shell=True)
-        except:
-            jobData.errMsg = "ERROR: Unable to pipe SLURM output to: " + csvPath
-            raise
-    
-        if not os.path.isfile(csvPath):
-            jobData.errMsg = "ERROR: squeue did not create necessary CSV file with job names."
-            raise Exception()
-    
-        try:
-            jobs = pd.read_csv(csvPath,delim_whitespace=True)
-        except:
-            jobData.errMsg = "ERROR: Failure to read in: " + csvPath
-            raise
-    
-        # Delete temporary CSV files.
-        cmdTmp = "rm -rf " + csvPath
-        subprocess.call(cmd,shell=True)
-       
-        # Compile expected job name that the job should occupy.
-        expName = "WHS" + str(jobData.jobID) + str(jobData.gageIDs[gageNum]) + str(iteration)
-    
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
-    
-        if len(jobs.NAME) > 0:
-            for jobNum in range(0,len(jobs.NAME)):
-                if jobs.NAME[jobNum].strip() == expName:
-                    print("MODEL SIMULATIONS FOUND")
-                    status = True
-        else:
-            status = False
-    
-        if not status:
-            print("NO MODEL SIMULATIONS FOUND")
-    
-    if jobData.jobRunType == 4 or jobData.jobRunType == 5:
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
+    #if jobData.jobRunType == 3 or jobData.jobRunType == 6:
+    #    # We are running via slurm
+    #    csvPath = "./SLURM_" + str(pidUnique) + ".csv"
+    #    cmd = "squeue -u " + str(jobData.owner) + \
+    #          ' --format=\"%.18i %.9P %.32j %.8u %.2t %.10M %.6D %R\"' + \
+    #          ' > ' + csvPath
+    #    try:
+    #        subprocess.call(cmd,shell=True)
+    #    except:
+    #        jobData.errMsg = "ERROR: Unable to pipe SLURM output to: " + csvPath
+    #        raise
+    #
+    #    if not os.path.isfile(csvPath):
+    #        jobData.errMsg = "ERROR: squeue did not create necessary CSV file with job names."
+    #        raise Exception()
+    #
+    #    try:
+    #        jobs = pd.read_csv(csvPath,delim_whitespace=True)
+    #    except:
+    #        jobData.errMsg = "ERROR: Failure to read in: " + csvPath
+    #        raise
+    #
+    #    # Delete temporary CSV files.
+    #    cmdTmp = "rm -rf " + csvPath
+    #    subprocess.call(cmd,shell=True)
         
-        # We are using mpiexec.
-        pidActive = []
-        exeName = "WHS" + str(jobData.jobID) + str(jobData.gageIDs[gageNum]) + str(iteration)
-        for proc in psutil.process_iter():
-            try:
-                if proc.name() == exeName:
-                    pidActive.append(proc.pid)
-            except:
-                print(exeName + " Found, but ended before Python could get the PID.")
-        if len(pidActive) == 0:
+    #    # Compile expected job name that the job should occupy.
+    #    expName = "WHS" + str(jobData.jobID) + str(jobData.gageIDs[gageNum]) + str(iteration)
+    #
+    #    # Assume no jobs for basin are being ran, unless found in the data frame.
+    #    status = False
+    #
+    #    if len(jobs.NAME) > 0:
+    #        for jobNum in range(0,len(jobs.NAME)):
+    #            if jobs.NAME[jobNum].strip() == expName:
+    #                print("MODEL SIMULATIONS FOUND")
+    #                status = True
+    #    else:
+    #        status = False
+    #
+    #    if not status:
+    #        print("NO MODEL SIMULATIONS FOUND")
+    #
+    #if jobData.jobRunType == 4 or jobData.jobRunType == 5:
+    # Assume no jobs for basin are being ran, unless found in the data frame.
+    status = False
+        
+    # We are using mpiexec.
+    pidActive = []
+    exeName = "WHS" + str(jobData.jobID) + str(jobData.gageIDs[gageNum]) + str(iteration)
+    for proc in psutil.process_iter():
+        try:
+            if proc.name() == exeName:
+                pidActive.append(proc.pid)
+        except:
+            print(exeName + " Found, but ended before Python could get the PID.")
+    if len(pidActive) == 0:
+        status = False
+        print("NO MODEL SIMULATIONS FOUND")
+    else:
+        print("MODEL SIMULATIONS FOUND")
+        # Ensure these are being ran by the proper user.
+        proc_stat_file = os.stat('/proc/%d' % pidActive[0])
+        uid = proc_stat_file.st_uid
+        userCheck = pwd.getpwuid(uid)[0]
+        if userCheck != str(jobData.owner):
+            jobData.errMsg = "ERROR: " + exeName + " is being ran by: " + \
+            userCheck + " When it should be ran by: " + jobData.owner
             status = False
-            print("NO MODEL SIMULATIONS FOUND")
+            raise Exception()
         else:
-            print("MODEL SIMULATIONS FOUND")
-            # Ensure these are being ran by the proper user.
-            proc_stat_file = os.stat('/proc/%d' % pidActive[0])
-            uid = proc_stat_file.st_uid
-            userCheck = pwd.getpwuid(uid)[0]
-            if userCheck != str(jobData.owner):
-                jobData.errMsg = "ERROR: " + exeName + " is being ran by: " + \
-                userCheck + " When it should be ran by: " + jobData.owner
-                status = False
-                raise Exception()
-            else:
-                status = True
+            status = True
                 
     return status
 
@@ -1998,76 +1977,73 @@ def checkSensCollectJob(jobData,gageID,iteration,gageNum,pbsJobId):
     #            status = False
     #            return status
                   
-    if jobData.jobRunType == 3 or jobData.jobRunType == 6:
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
-        
-        # We are running via slurm
-        csvPath = "./SLURM_" + str(pidUnique) + ".csv"
-        cmd = "squeue -u " + str(jobData.owner) + \
-              ' --format=\"%.18i %.9P %.32j %.8u %.2t %.10M %.6D %R\"' + \
-              ' > ' + csvPath
-        try:
-            subprocess.call(cmd,shell=True)
-        except:
-            jobData.errMsg = "ERROR: Unable to pipe SLURM output to: " + csvPath
-            raise
-    
-        if not os.path.isfile(csvPath):
-            jobData.errMsg = "ERROR: squeue did not create necessary CSV file with job names."
-            raise Exception()
-    
-        try:
-            jobs = pd.read_csv(csvPath,delim_whitespace=True)
-        except:
-            jobData.errMsg = "ERROR: Failure to read in: " + csvPath
-            raise
-    
-        # Delete temporary CSV files.
-        cmdTmp = "rm -rf " + csvPath
-        subprocess.call(cmd,shell=True)
-    
-        # Compile expected job name that the job should occupy.
-        expName = "WH_SENS_COLLECT_" + str(jobData.jobID) + "_" + \
-                  str(gageID) + "_" + str(iteration)
-    
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
-    
-        if len(jobs.NAME) > 0:
-            for jobNum in range(0,len(jobs.NAME)):
-                if jobs.NAME[jobNum].strip() == expName:
-                    status = True
-        else:
-            status = False
-    
-    if jobData.jobRunType == 4 or jobData.jobRunType == 5:
-        # Assume no jobs for basin are being ran, unless found in the data frame.
-        status = False
+    #if jobData.jobRunType == 3 or jobData.jobRunType == 6:
+    #    # We are running via slurm
+    #    csvPath = "./SLURM_" + str(pidUnique) + ".csv"
+    #    cmd = "squeue -u " + str(jobData.owner) + \
+    #          ' --format=\"%.18i %.9P %.32j %.8u %.2t %.10M %.6D %R\"' + \
+    #          ' > ' + csvPath
+    #    try:
+    #        subprocess.call(cmd,shell=True)
+    #    except:
+    #        jobData.errMsg = "ERROR: Unable to pipe SLURM output to: " + csvPath
+    #        raise
+    #
+    #    if not os.path.isfile(csvPath):
+    #        jobData.errMsg = "ERROR: squeue did not create necessary CSV file with job names."
+    #        raise Exception()
+    #
+    #    try:
+    #        jobs = pd.read_csv(csvPath,delim_whitespace=True)
+    #    except:
+    #        jobData.errMsg = "ERROR: Failure to read in: " + csvPath
+    #        raise
+    #
+    #    # Delete temporary CSV files.
+    #    cmdTmp = "rm -rf " + csvPath
+    #    subprocess.call(cmd,shell=True)
+    #
+    #    # Compile expected job name that the job should occupy.
+    #    expName = "WH_SENS_COLLECT_" + str(jobData.jobID) + "_" + \
+    #              str(gageID) + "_" + str(iteration)
+    #
+    #    # Assume no jobs for basin are being ran, unless found in the data frame.
+    #    status = False
+    #
+    #    if len(jobs.NAME) > 0:
+    #        for jobNum in range(0,len(jobs.NAME)):
+    #            if jobs.NAME[jobNum].strip() == expName:
+    #                status = True
+    #    else:
+    #        status = False
+    #
+    #if jobData.jobRunType == 4 or jobData.jobRunType == 5:
+    # Assume no jobs for basin are being ran, unless found in the data frame.
+    status = False
 
-        # We are running via mpiexec
-        pidActive = []
-        exeName = "SCOL" + str(jobData.jobID) + str(gageID) + str(iteration)
-        for proc in psutil.process_iter():
-            try:
-                if proc.name() == exeName:
-                    pidActive.append(proc.pid)
-            except:
-                print(exeName + " Found, but ended before Python could get the PID.")
-        if len(pidActive) == 0:
+    # We are running via mpiexec
+    pidActive = []
+    exeName = "SCOL" + str(jobData.jobID) + str(gageID) + str(iteration)
+    for proc in psutil.process_iter():
+        try:
+            if proc.name() == exeName:
+                pidActive.append(proc.pid)
+        except:
+            print(exeName + " Found, but ended before Python could get the PID.")
+    if len(pidActive) == 0:
+        status = False
+    else:
+        # Ensure these are being ran by the proper user.
+        proc_stat_file = os.stat('/proc/%d' % pidActive[0])
+        uid = proc_stat_file.st_uid
+        userCheck = pwd.getpwuid(uid)[0]
+        if userCheck != str(jobData.owner):
+            jobData.errMsg = "ERROR: " + exeName + " is being ran by: " + \
+            userCheck + " When it should be ran by: " + jobData.owner
             status = False
+            raise Exception()
         else:
-            # Ensure these are being ran by the proper user.
-            proc_stat_file = os.stat('/proc/%d' % pidActive[0])
-            uid = proc_stat_file.st_uid
-            userCheck = pwd.getpwuid(uid)[0]
-            if userCheck != str(jobData.owner):
-                jobData.errMsg = "ERROR: " + exeName + " is being ran by: " + \
-                userCheck + " When it should be ran by: " + jobData.owner
-                status = False
-                raise Exception()
-            else:
-                status = True
+            status = True
     
     return status
 

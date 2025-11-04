@@ -149,9 +149,9 @@ def main(argv):
     # if we are going to use the mask, read in the file
     if args.enableMask[0] == 1:
        maskFile = workDir + "/mask.coarse.tif"
-       mask = xr.open_rasterio(maskFile)
+       mask = xr.open_dataset(maskFile,engine='rasterio')
        maskFile = workDir + "/mask.fine.tif"
-       maskFine= xr.open_rasterio(maskFile) 
+       maskFine= xr.open_dataset(maskFile,engine='rasterio') 
        maskFile = workDir + "/mask.GWBUCKET.csv"
        maskGW = pd.read_csv(maskFile,dtype={0: int})
 
@@ -303,133 +303,133 @@ def main(argv):
 
         if args.enableMask[0] == 1:
             if param == "bexp":
-                idSoil2D.variables['bexp'][:,:,:,:] = np.where(np.flipud(mask[0])==1,idSoil2D.variables['bexp'][:,:,:,:],idSoil2D.variables['bexp'][:,:,:,:]*float(newParams.bexp[0]))
+                idSoil2D.variables['bexp'][:,:,:,:] = np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['bexp'][:,:,:,:],idSoil2D.variables['bexp'][:,:,:,:]*float(newParams.bexp[0]))
 
             if param == "smcmax":
-                idSoil2D.variables['smcmax'][:,:,:,:] = np.where(np.flipud(mask[0])==1,idSoil2D.variables['smcmax'][:,:,:,:],idSoil2D.variables['smcmax'][:,:,:,:]*float(newParams.smcmax[0]))
+                idSoil2D.variables['smcmax'][:,:,:,:] = np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['smcmax'][:,:,:,:],idSoil2D.variables['smcmax'][:,:,:,:]*float(newParams.smcmax[0]))
 
             if param == "slope":
-                idSoil2D.variables['slope'][:,:,:] = np.where(np.flipud(mask[0])==1,idSoil2D.variables['slope'][:,:,:],idSoil2D.variables['slope'][:,:,:]*0+float(newParams.slope[0]))
+                idSoil2D.variables['slope'][:,:,:] = np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['slope'][:,:,:],idSoil2D.variables['slope'][:,:,:]*0+float(newParams.slope[0]))
 
             if param == "lksatfac":
-                idFullDom.variables['LKSATFAC'][:,:] = np.where(maskFine[0]==1,idFullDom.variables['LKSATFAC'][:,:],idFullDom.variables['LKSATFAC'][:,:]*0+float(newParams.lksatfac[0]))
+                idFullDom.variables['LKSATFAC'][:,:] = np.where(maskFine['band_data'][0]==1,idFullDom.variables['LKSATFAC'][:,:],idFullDom.variables['LKSATFAC'][:,:]*0+float(newParams.lksatfac[0]))
 
             if param == "cwpvt":
-                idSoil2D.variables['cwpvt'][:,:,:] = np.where(np.flipud(mask[0])==1,idSoil2D.variables['cwpvt'][:,:,:],idSoil2D.variables['cwpvt'][:,:,:]*float(newParams.cwpvt[0]))
+                idSoil2D.variables['cwpvt'][:,:,:] = np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['cwpvt'][:,:,:],idSoil2D.variables['cwpvt'][:,:,:]*float(newParams.cwpvt[0]))
 
             if param == "vcmx25":
-                idSoil2D.variables['vcmx25'][:,:,:] = np.where(np.flipud(mask[0])==1,idSoil2D.variables['vcmx25'][:,:,:],idSoil2D.variables['vcmx25'][:,:,:]*float(newParams.vcmx25[0]))
+                idSoil2D.variables['vcmx25'][:,:,:] = np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['vcmx25'][:,:,:],idSoil2D.variables['vcmx25'][:,:,:]*float(newParams.vcmx25[0]))
 
             if param == "mp":
-                idSoil2D.variables['mp'][:,:,:] = np.where(np.flipud(mask[0])==1,idSoil2D.variables['mp'][:,:,:],idSoil2D.variables['mp'][:,:,:]*float(newParams.mp[0]))
+                idSoil2D.variables['mp'][:,:,:] = np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['mp'][:,:,:],idSoil2D.variables['mp'][:,:,:]*float(newParams.mp[0]))
 
             if param == "hvt":
-                idSoil2D.variables['hvt'][:,:,:] = np.where(np.flipud(mask[0])==1,idSoil2D.variables['hvt'][:,:,:],idSoil2D.variables['hvt'][:,:,:]*float(newParams.hvt[0]))
+                idSoil2D.variables['hvt'][:,:,:] = np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['hvt'][:,:,:],idSoil2D.variables['hvt'][:,:,:]*float(newParams.hvt[0]))
 
             if param == "mfsno":
-                idSoil2D.variables['mfsno'][:,:,:] = np.where(np.flipud(mask[0])==1,idSoil2D.variables['mfsno'][:,:,:],idSoil2D.variables['mfsno'][:,:,:]*float(newParams.mfsno[0]))
+                idSoil2D.variables['mfsno'][:,:,:] = np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['mfsno'][:,:,:],idSoil2D.variables['mfsno'][:,:,:]*float(newParams.mfsno[0]))
 
             if param == "refkdt":
-                idSoil2D.variables['refkdt'][:,:,:] = np.where(np.flipud(mask[0])==1,idSoil2D.variables['refkdt'][:,:,:],idSoil2D.variables['refkdt'][:,:,:]*0+float(newParams.refkdt[0]))
+                idSoil2D.variables['refkdt'][:,:,:] = np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['refkdt'][:,:,:],idSoil2D.variables['refkdt'][:,:,:]*0+float(newParams.refkdt[0]))
 
             if param == "dksat":
-                idSoil2D.variables['dksat'][:,:,:,:] = np.where(np.flipud(mask[0])==1,idSoil2D.variables['dksat'][:,:,:,:],idSoil2D.variables['dksat'][:,:,:,:]*float(newParams.dksat[0]))
+                idSoil2D.variables['dksat'][:,:,:,:] = np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['dksat'][:,:,:,:],idSoil2D.variables['dksat'][:,:,:,:]*float(newParams.dksat[0]))
 
             if param == "retdeprtfac":
-                idFullDom.variables['RETDEPRTFAC'][:,:] = np.where(maskFine[0]==1,idFullDom.variables['RETDEPRTFAC'][:,:],idFullDom.variables['RETDEPRTFAC'][:,:]*0+float(newParams.retdeprtfac[0]))
+                idFullDom.variables['RETDEPRTFAC'][:,:] = np.where(maskFine['band_data'][0]==1,idFullDom.variables['RETDEPRTFAC'][:,:],idFullDom.variables['RETDEPRTFAC'][:,:]*0+float(newParams.retdeprtfac[0]))
 
             if param == "ovroughrtfac":
-                idFullDom.variables['OVROUGHRTFAC'][:,:] = np.where(maskFine[0]==1,idFullDom.variables['OVROUGHRTFAC'][:,:],idFullDom.variables['OVROUGHRTFAC'][:,:]*0+float(newParams.ovroughrtfac[0]))
+                idFullDom.variables['OVROUGHRTFAC'][:,:] = np.where(maskFine['band_data'][0]==1,idFullDom.variables['OVROUGHRTFAC'][:,:],idFullDom.variables['OVROUGHRTFAC'][:,:]*0+float(newParams.ovroughrtfac[0]))
 
             if param == "dksat":
-                idHydroTbl.variables['LKSAT'][:,:] = np.where(np.flipud(mask[0])==1,idHydroTbl.variables['LKSAT'][:,:],idHydroTbl.variables['LKSAT'][:,:]*float(newParams.dksat[0]))
+                idHydroTbl.variables['LKSAT'][:,:] = np.where(np.flipud(mask['band_data'][0])==1,idHydroTbl.variables['LKSAT'][:,:],idHydroTbl.variables['LKSAT'][:,:]*float(newParams.dksat[0]))
 
             if param == "smcmax":
-                idHydroTbl.variables['SMCMAX1'][:,:] = np.where(np.flipud(mask[0])==1,idHydroTbl.variables['SMCMAX1'][:,:],idHydroTbl.variables['SMCMAX1'][:,:]*float(newParams.smcmax[0]))
+                idHydroTbl.variables['SMCMAX1'][:,:] = np.where(np.flipud(mask['band_data'][0])==1,idHydroTbl.variables['SMCMAX1'][:,:],idHydroTbl.variables['SMCMAX1'][:,:]*float(newParams.smcmax[0]))
 
             if param == "rsurfexp":
-                idSoil2D.variables['rsurfexp'][:,:,:] = np.where(np.flipud(mask[0])==1,idSoil2D.variables['rsurfexp'][:,:,:],idSoil2D.variables['rsurfexp'][:,:,:]*0+float(newParams.rsurfexp[0]))
+                idSoil2D.variables['rsurfexp'][:,:,:] = np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['rsurfexp'][:,:,:],idSoil2D.variables['rsurfexp'][:,:,:]*0+float(newParams.rsurfexp[0]))
 
             if param == "z0sno":
-                idSoil2D.variables['z0sno'][:,:,:] =  np.where(np.flipud(mask[0])==1,idSoil2D.variables['z0sno'][:,:,:],idSoil2D.variables['z0sno'][:,:,:]*0+float(newParams.z0sno[0]))
+                idSoil2D.variables['z0sno'][:,:,:] =  np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['z0sno'][:,:,:],idSoil2D.variables['z0sno'][:,:,:]*0+float(newParams.z0sno[0]))
 
             if param == "ssi":
-                idSoil2D.variables['ssi'][:,:,:] =  np.where(np.flipud(mask[0])==1,idSoil2D.variables['ssi'][:,:,:],idSoil2D.variables['ssi'][:,:,:]*0+float(newParams.ssi[0]))
+                idSoil2D.variables['ssi'][:,:,:] =  np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['ssi'][:,:,:],idSoil2D.variables['ssi'][:,:,:]*0+float(newParams.ssi[0]))
 
             if param == "snowretfac":
-                idSoil2D.variables['snowretfac'][:,:,:] =  np.where(np.flipud(mask[0])==1,idSoil2D.variables['snowretfac'][:,:,:],idSoil2D.variables['snowretfac'][:,:,:]*0+float(newParams.snowretfac[0]))
+                idSoil2D.variables['snowretfac'][:,:,:] =  np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['snowretfac'][:,:,:],idSoil2D.variables['snowretfac'][:,:,:]*0+float(newParams.snowretfac[0]))
 
             if param == "swemx":
-                idSoil2D.variables['swemx'][:,:,:] =  np.where(np.flipud(mask[0])==1,idSoil2D.variables['swemx'][:,:,:],idSoil2D.variables['swemx'][:,:,:]*0+float(newParams.swemx[0]))
+                idSoil2D.variables['swemx'][:,:,:] =  np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['swemx'][:,:,:],idSoil2D.variables['swemx'][:,:,:]*0+float(newParams.swemx[0]))
 
             if param == "tau0":
-                idSoil2D.variables['tau0'][:,:,:] =  np.where(np.flipud(mask[0])==1,idSoil2D.variables['tau0'][:,:,:],idSoil2D.variables['tau0'][:,:,:]*0+float(newParams.tau0[0]))
+                idSoil2D.variables['tau0'][:,:,:] =  np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['tau0'][:,:,:],idSoil2D.variables['tau0'][:,:,:]*0+float(newParams.tau0[0]))
 
             if param == "graingrowth":
-                idSoil2D.variables['graingrowth'][:,:,:] =  np.where(np.flipud(mask[0])==1,idSoil2D.variables['graingrowth'][:,:,:],idSoil2D.variables['graingrowth'][:,:,:]*0+float(newParams.graingrowth[0]))
+                idSoil2D.variables['graingrowth'][:,:,:] =  np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['graingrowth'][:,:,:],idSoil2D.variables['graingrowth'][:,:,:]*0+float(newParams.graingrowth[0]))
 
             if param == "extragrowth":
-                idSoil2D.variables['extragrowth'][:,:,:] =  np.where(np.flipud(mask[0])==1,idSoil2D.variables['extragrowth'][:,:,:],idSoil2D.variables['extragrowth'][:,:,:]*0+float(newParams.extragrowth[0]))
+                idSoil2D.variables['extragrowth'][:,:,:] =  np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['extragrowth'][:,:,:],idSoil2D.variables['extragrowth'][:,:,:]*0+float(newParams.extragrowth[0]))
 
             if param == "dirtsoot":
-                idSoil2D.variables['dirtsoot'][:,:,:] =  np.where(np.flipud(mask[0])==1,idSoil2D.variables['dirtsoot'][:,:,:],idSoil2D.variables['dirtsoot'][:,:,:]*0+float(newParams.dirtsoot[0]))
+                idSoil2D.variables['dirtsoot'][:,:,:] =  np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['dirtsoot'][:,:,:],idSoil2D.variables['dirtsoot'][:,:,:]*0+float(newParams.dirtsoot[0]))
 
             if param == "bats_cosz":
-                idSoil2D.variables['bats_cosz'][:,:,:] =  np.where(np.flipud(mask[0])==1,idSoil2D.variables['bats_cosz'][:,:,:],idSoil2D.variables['bats_cosz'][:,:,:]*0+float(newParams.bats_cosz[0]))
+                idSoil2D.variables['bats_cosz'][:,:,:] =  np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['bats_cosz'][:,:,:],idSoil2D.variables['bats_cosz'][:,:,:]*0+float(newParams.bats_cosz[0]))
 
             if param == "bats_visnew":
-                idSoil2D.variables['bats_visnew'][:,:,:] =  np.where(np.flipud(mask[0])==1,idSoil2D.variables['bats_visnew'][:,:,:],idSoil2D.variables['bats_visnew'][:,:,:]*0+float(newParams.bats_visnew[0]))
+                idSoil2D.variables['bats_visnew'][:,:,:] =  np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['bats_visnew'][:,:,:],idSoil2D.variables['bats_visnew'][:,:,:]*0+float(newParams.bats_visnew[0]))
 
             if param == "bats_nirnew":
-                idSoil2D.variables['bats_nirnew'][:,:,:] =  np.where(np.flipud(mask[0])==1,idSoil2D.variables['bats_nirnew'][:,:,:],idSoil2D.variables['bats_nirnew'][:,:,:]*0+float(newParams.bats_nirnew[0]))
+                idSoil2D.variables['bats_nirnew'][:,:,:] =  np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['bats_nirnew'][:,:,:],idSoil2D.variables['bats_nirnew'][:,:,:]*0+float(newParams.bats_nirnew[0]))
 
             if param == "bats_visage":
-                idSoil2D.variables['bats_visage'][:,:,:] =  np.where(np.flipud(mask[0])==1,idSoil2D.variables['bats_visage'][:,:,:],idSoil2D.variables['bats_visage'][:,:,:]*0+float(newParams.bats_visage[0]))
+                idSoil2D.variables['bats_visage'][:,:,:] =  np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['bats_visage'][:,:,:],idSoil2D.variables['bats_visage'][:,:,:]*0+float(newParams.bats_visage[0]))
 
             if param == "bats_nirage":
-                idSoil2D.variables['bats_nirage'][:,:,:] =  np.where(np.flipud(mask[0])==1,idSoil2D.variables['bats_nirage'][:,:,:],idSoil2D.variables['bats_nirage'][:,:,:]*0+float(newParams.bats_nirage[0]))
+                idSoil2D.variables['bats_nirage'][:,:,:] =  np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['bats_nirage'][:,:,:],idSoil2D.variables['bats_nirage'][:,:,:]*0+float(newParams.bats_nirage[0]))
 
             if param == "bats_visdir":
-                idSoil2D.variables['bats_visdir'][:,:,:] =  np.where(np.flipud(mask[0])==1,idSoil2D.variables['bats_visdir'][:,:,:],idSoil2D.variables['bats_visdir'][:,:,:]*0+float(newParams.bats_visdir[0]))
+                idSoil2D.variables['bats_visdir'][:,:,:] =  np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['bats_visdir'][:,:,:],idSoil2D.variables['bats_visdir'][:,:,:]*0+float(newParams.bats_visdir[0]))
 
             if param == "bats_nirdir":
-                idSoil2D.variables['bats_nirdir'][:,:,:] =  np.where(np.flipud(mask[0])==1,idSoil2D.variables['bats_nirdir'][:,:,:],idSoil2D.variables['bats_nirdir'][:,:,:]*0+float(newParams.bats_nirdir[0]))
+                idSoil2D.variables['bats_nirdir'][:,:,:] =  np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['bats_nirdir'][:,:,:],idSoil2D.variables['bats_nirdir'][:,:,:]*0+float(newParams.bats_nirdir[0]))
 
             if param == "rsurfsnow":
-                idSoil2D.variables['rsurfsnow'][:,:,:] =  np.where(np.flipud(mask[0])==1,idSoil2D.variables['rsurfsnow'][:,:,:],idSoil2D.variables['rsurfsnow'][:,:,:]*0+float(newParams.rsurfsnow[0]))
+                idSoil2D.variables['rsurfsnow'][:,:,:] =  np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['rsurfsnow'][:,:,:],idSoil2D.variables['rsurfsnow'][:,:,:]*0+float(newParams.rsurfsnow[0]))
 
             if param == "refsnowdens":
-                idSoil2D.variables['refsnowdens'][:,:,:] =  np.where(np.flipud(mask[0])==1,idSoil2D.variables['refsnowdens'][:,:,:],idSoil2D.variables['refsnowdens'][:,:,:]*0+float(newParams.refsnowdens[0]))
+                idSoil2D.variables['refsnowdens'][:,:,:] =  np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['refsnowdens'][:,:,:],idSoil2D.variables['refsnowdens'][:,:,:]*0+float(newParams.refsnowdens[0]))
 
             if param == "frac_direct":
-                idSoil2D.variables['frac_direct'][:,:,:] =  np.where(np.flipud(mask[0])==1,idSoil2D.variables['frac_direct'][:,:,:],idSoil2D.variables['frac_direct'][:,:,:]*0+float(newParams.frac_direct[0]))
+                idSoil2D.variables['frac_direct'][:,:,:] =  np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['frac_direct'][:,:,:],idSoil2D.variables['frac_direct'][:,:,:]*0+float(newParams.frac_direct[0]))
 
             if param == "frac_visible":
-                idSoil2D.variables['frac_visible'][:,:,:] =  np.where(np.flipud(mask[0])==1,idSoil2D.variables['frac_visible'][:,:,:],idSoil2D.variables['frac_visible'][:,:,:]*0+float(newParams.frac_visible[0]))
+                idSoil2D.variables['frac_visible'][:,:,:] =  np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['frac_visible'][:,:,:],idSoil2D.variables['frac_visible'][:,:,:]*0+float(newParams.frac_visible[0]))
 
             if param == "scamax":
-                idSoil2D.variables['scamax'][:,:,:] =  np.where(np.flipud(mask[0])==1,idSoil2D.variables['scamax'][:,:,:],idSoil2D.variables['scamax'][:,:,:]*0+float(newParams.scamax[0]))
+                idSoil2D.variables['scamax'][:,:,:] =  np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['scamax'][:,:,:],idSoil2D.variables['scamax'][:,:,:]*0+float(newParams.scamax[0]))
 
             if param == "unload_temp":
-                idSoil2D.variables['unload_temp'][:,:,:] =  np.where(np.flipud(mask[0])==1,idSoil2D.variables['unload_temp'][:,:,:],idSoil2D.variables['unload_temp'][:,:,:]*0+float(newParams.unload_temp[0]))
+                idSoil2D.variables['unload_temp'][:,:,:] =  np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['unload_temp'][:,:,:],idSoil2D.variables['unload_temp'][:,:,:]*0+float(newParams.unload_temp[0]))
 
             if param == "unload_wind":
-                idSoil2D.variables['unload_wind'][:,:,:] =  np.where(np.flipud(mask[0])==1,idSoil2D.variables['unload_wind'][:,:,:],idSoil2D.variables['unload_wind'][:,:,:]*0+float(newParams.unload_wind[0]))
+                idSoil2D.variables['unload_wind'][:,:,:] =  np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['unload_wind'][:,:,:],idSoil2D.variables['unload_wind'][:,:,:]*0+float(newParams.unload_wind[0]))
 
             if param == "maxsno_sp":
-                idSoil2D.variables['maxsno_sp'][:,:,:] =  np.where(np.flipud(mask[0])==1,idSoil2D.variables['maxsno_sp'][:,:,:],idSoil2D.variables['maxsno_sp'][:,:,:]*0+float(newParams.maxsno_sp[0]))
+                idSoil2D.variables['maxsno_sp'][:,:,:] =  np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['maxsno_sp'][:,:,:],idSoil2D.variables['maxsno_sp'][:,:,:]*0+float(newParams.maxsno_sp[0]))
 
             if param == "nexp":
-                idHydroTbl.variables['NEXP'][:,:] = np.where(np.flipud(mask[0])==1,idHydroTbl.variables['NEXP'][:,:],idHydroTbl.variables['NEXP'][:,:]*float(newParams.nexp[0]))
+                idHydroTbl.variables['NEXP'][:,:] = np.where(np.flipud(mask['band_data'][0])==1,idHydroTbl.variables['NEXP'][:,:],idHydroTbl.variables['NEXP'][:,:]*float(newParams.nexp[0]))
 
             if param == "AXAJ":
-                idSoil2D.variables['AXAJ'][:,:,:] = np.where(np.flipud(mask[0])==1,idSoil2D.variables['AXAJ'][:,:,:],idSoil2D.variables['AXAJ'][:,:,:]*float(newParams.AXAJ[0]))
+                idSoil2D.variables['AXAJ'][:,:,:] = np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['AXAJ'][:,:,:],idSoil2D.variables['AXAJ'][:,:,:]*float(newParams.AXAJ[0]))
 
             if param == "BXAJ":
-                idSoil2D.variables['BXAJ'][:,:,:] = np.where(np.flipud(mask[0])==1,idSoil2D.variables['BXAJ'][:,:,:],idSoil2D.variables['BXAJ'][:,:,:]*float(newParams.BXAJ[0]))
+                idSoil2D.variables['BXAJ'][:,:,:] = np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['BXAJ'][:,:,:],idSoil2D.variables['BXAJ'][:,:,:]*float(newParams.BXAJ[0]))
 
             if param == "XXAJ":
-                idSoil2D.variables['XXAJ'][:,:,:] = np.where(np.flipud(mask[0])==1,idSoil2D.variables['XXAJ'][:,:,:],idSoil2D.variables['XXAJ'][:,:,:]*float(newParams.XXAJ[0]))
+                idSoil2D.variables['XXAJ'][:,:,:] = np.where(np.flipud(mask['band_data'][0])==1,idSoil2D.variables['XXAJ'][:,:,:],idSoil2D.variables['XXAJ'][:,:,:]*float(newParams.XXAJ[0]))
 		
             if args.gwFlag[0] == 1 or args.gwFlag[0] == 4:   
                 if param == "zmax":

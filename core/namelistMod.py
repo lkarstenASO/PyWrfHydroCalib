@@ -606,11 +606,11 @@ def createHydroNL(statusData,gageData,jobData,outDir,typeFlag,bDate,eDate,genFla
                 fileObj.write('compound_channel = .FALSE.\n')
         fileObj.write('\n')
         fileObj.write('! Switch to activate channel-loss option (0=no, 1=yes) [Requires Kchan in RouteLink]\n')
-        fileObj.write('channel_loss_option = \"' + str(jobData.channelLossOpt) + '\n')
+        fileObj.write('channel_loss_option = ' + str(jobData.channelLossOpt) + '\n')
         fileObj.write('\n')
         fileObj.write('! Lake / Reservoir options (0=lakes off, 1=level pool (typical default),\n')
         fileObj.write('!                           2=passthrough, 3=reservoir DA [see &reservoir_nlist below])\n')
-        fileObj.write('lake_option = \"' + str(jobData.lakeOpt) + '\n')
+        fileObj.write('lake_option = ' + str(jobData.lakeOpt) + '\n')
         fileObj.write('\n')
         fileObj.write('! Specify the simulated lakes for NHDPlus reach-based routing\n')
         if str(gageData.lkFile) == '-9999':

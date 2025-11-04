@@ -166,43 +166,23 @@ def runModel(statusData,staticData,db,gageID,gage,keySlot,basinNum,iteration,pbs
     # or restart the model.
     runFile = runDir + "/run_WH.sh"
     rstFile = runDir + "/run_WH_Restart.sh"
-    runCalibFile = runDir + "/run_WH_CALIB.sh"
-    if statusData.jobRunType == 3 or statusData.jobRunType == 6:
-        if not os.path.isfile(runCalibFile):
-            try:
-                generateSlurmCalibScript(statusData, int(gageID), runDir, workDir, staticData)
-            except:
-                raise
-    if statusData.jobRunType == 4 or statusData.jobRunType == 5:
-        if not os.path.isfile(runCalibFile):
-            try:
-                generateMpiCalibScript(statusData, int(gageID), int(basinNum), runDir, workDir, staticData)
-            except:
-                raise
+    try:
+        generateMpiCalibScript(statusData, int(gageID), int(basinNum), runDir, workDir, staticData)
+    except:
+        raise
 
     if os.path.isfile(runFile):
         os.remove(runFile)
     if os.path.isfile(rstFile):
         os.remove(rstFile)
-
-    if statusData.jobRunType == 3 or statusData.jobRunType == 6:
-        try:
-            generateSlurmScript(statusData, int(gageID), runDir)
-        except:
-            raise
-        try:
-            generateRestartSlurmScript(statusData, int(gageID), runDir)
-        except:
-            raise
-    if statusData.jobRunType == 4 or statusData.jobRunType == 5:
-        try:
-            generateMpiScript(statusData, int(gageID), int(basinNum), runDir)
-        except:
-            raise
-        try:
-            generateMpiRstScript(statusData, int(gageID), int(basinNum), runDir)
-        except:
-            raise
+    try:
+        generateMpiScript(statusData, int(gageID), int(basinNum), runDir)
+    except:
+        raise
+    try:
+        generateMpiRstScript(statusData, int(gageID), int(basinNum), runDir)
+    except:
+        raise
 
     # Calculate datetime objects
     begDate = statusData.bCalibDate
@@ -553,7 +533,7 @@ def runModel(statusData,staticData,db,gageID,gage,keySlot,basinNum,iteration,pbs
                     errMod.cleanCalib(statusData,workDir,runDir)
                 except:
                     raise
-                # If our S3 object has been initialized - Upload our calibration files for this basin to the bucket
+                ## If our S3 object has been initialized - Upload our calibration files for this basin to the bucket
                 if staticData.s3Client is not None:
                     calibIoMod.calibOutputS3Upload(gage,staticData,gageMeta,workDir)
 
@@ -1230,17 +1210,11 @@ def runModel(statusData,staticData,db,gageID,gage,keySlot,basinNum,iteration,pbs
             
         print("FIRING OFF FIRST CALIBRATION CODE")
         # Fire off calibration programs.
-        if statusData.jobRunType == 3 or statusData.jobRunType == 6:
-            cmd = "sbatch " + workDir + "/run_WH_CALIB.sh"
-        if statusData.jobRunType == 4 or statusData.jobRunType == 5:
-            cmd = workDir + "/run_WH_CALIB.sh 1>" + runDir + "/WH_CALIB_" + \
-                str(statusData.jobID) + "_" + str(gageID) + ".out" + \
-                ' 2>' + runDir + "/WH_CALIB_" + str(statusData.jobID) + "_" + str(gageID) + ".err"
+        cmd = workDir + "/run_WH_CALIB.sh 1>" + runDir + "/WH_CALIB_" + \
+              str(statusData.jobID) + "_" + str(gageID) + ".out" + \
+              ' 2>' + runDir + "/WH_CALIB_" + str(statusData.jobID) + "_" + str(gageID) + ".err"
         try:
-            if statusData.jobRunType == 3 or statusData.jobRunType == 6:
-                subprocess.call(cmd,shell=True)
-            if statusData.jobRunType == 4 or statusData.jobRunType == 5:
-                p2 = subprocess.Popen([str(cmd)], shell=True)
+            p2 = subprocess.Popen([str(cmd)], shell=True)
             time.sleep(5)
         except:
             statusData.errMsg = "ERROR: Unable to launch WRF-Hydro Calib job for gage: " + str(gageMeta.gage[basinNum])
@@ -1276,17 +1250,11 @@ def runModel(statusData,staticData,db,gageID,gage,keySlot,basinNum,iteration,pbs
 
         print("RESTARTING FIRST CALIBRATION CODE")
         # Fire off calibration programs.
-        if statusData.jobRunType == 3 or statusData.jobRunType == 6:
-            cmd = "sbatch " + workDir + "/run_WH_CALIB.sh"
-        if statusData.jobRunType == 4 or statusData.jobRunType == 5:
-            cmd = workDir + "/run_WH_CALIB.sh 1>" + runDir + "/WH_CALIB_" + \
-                str(statusData.jobID) + "_" + str(gageID) + ".out" + \
-                ' 2>' + runDir + "/WH_CALIB_" + str(statusData.jobID) + "_" + str(gageID) + ".err"
+        cmd = workDir + "/run_WH_CALIB.sh 1>" + runDir + "/WH_CALIB_" + \
+              str(statusData.jobID) + "_" + str(gageID) + ".out" + \
+              ' 2>' + runDir + "/WH_CALIB_" + str(statusData.jobID) + "_" + str(gageID) + ".err"
         try:
-            if statusData.jobRunType == 3 or statusData.jobRunType == 6:
-                subprocess.call(cmd,shell=True)
-            if statusData.jobRunType == 4 or statusData.jobRunType == 5:
-                p2 = subprocess.Popen([str(cmd)], shell=True)
+            p2 = subprocess.Popen([str(cmd)], shell=True)
             time.sleep(5)
         except:
             statusData.errMsg = "ERROR: Unable to launch WRF-Hydro Calib job for gage: " + str(gageMeta.gage[basinNum])
@@ -1314,17 +1282,11 @@ def runModel(statusData,staticData,db,gageID,gage,keySlot,basinNum,iteration,pbs
             
         print("FIRING OFF CALIB CODE")
         # Fire off calibration program.
-        if statusData.jobRunType == 3 or statusData.jobRunType == 6:
-            cmd = "sbatch " + workDir + "/run_WH_CALIB.sh"
-        if statusData.jobRunType == 4 or statusData.jobRunType == 5:
-            cmd = workDir + "/run_WH_CALIB.sh 1>" + runDir + "/WH_CALIB_" + \
-                  str(statusData.jobID) + "_" + str(gageID) + ".out" + \
-                ' 2>' + runDir + "/WH_CALIB_" + str(statusData.jobID) + "_" + str(gageID) + ".err"
+        cmd = workDir + "/run_WH_CALIB.sh 1>" + runDir + "/WH_CALIB_" + \
+              str(statusData.jobID) + "_" + str(gageID) + ".out" + \
+              ' 2>' + runDir + "/WH_CALIB_" + str(statusData.jobID) + "_" + str(gageID) + ".err"
         try:
-            if statusData.jobRunType == 3 or statusData.jobRunType == 6:
-                subprocess.call(cmd,shell=True)
-            if statusData.jobRunType == 4 or statusData.jobRunType == 5:
-                p2 = subprocess.Popen([str(cmd)], shell=True)
+            p3 = subprocess.Popen([cmd], shell=True)
             time.sleep(5)
         except:
             statusData.errMsg = "ERROR: Unable to launch WRF-Hydro Calib job for gage: " + str(gageMeta.gage[basinNum])
@@ -1351,17 +1313,11 @@ def runModel(statusData,staticData,db,gageID,gage,keySlot,basinNum,iteration,pbs
 
         print("FIRING OFF CALIB CODE")
         # Fire off calibration program.
-        if statusData.jobRunType == 3 or statusData.jobRunType == 6:
-            cmd = "sbatch " + workDir + "/run_WH_CALIB.sh"
-        if statusData.jobRunType == 4 or statusData.jobRunType == 5:
-            cmd = workDir + "/run_WH_CALIB.sh 1>" + runDir + "/WH_CALIB_" + \
-                  str(statusData.jobID) + "_" + str(gageID) + ".out" + \
-                ' 2>' + runDir + "/WH_CALIB_" + str(statusData.jobID) + "_" + str(gageID) + ".err"
+        cmd = workDir + "/run_WH_CALIB.sh 1>" + runDir + "/WH_CALIB_" + \
+              str(statusData.jobID) + "_" + str(gageID) + ".out" + \
+              ' 2>' + runDir + "/WH_CALIB_" + str(statusData.jobID) + "_" + str(gageID) + ".err"
         try:
-            if statusData.jobRunType == 3 or statusData.jobRunType == 6:
-                subprocess.call(cmd,shell=True)
-            if statusData.jobRunType == 4 or statusData.jobRunType == 5:
-                p2 = subprocess.Popen([str(cmd)], shell=True)
+            p3 = subprocess.Popen([cmd], shell=True)
             time.sleep(5)
         except:
             statusData.errMsg = "ERROR: Unable to launch WRF-Hydro Calib job for gage: " + str(gageMeta.gage[basinNum])
@@ -1859,7 +1815,10 @@ def generateRScript(jobData,gageMeta,gageNum,iteration):
         fileObj.write(inStr)
         inStr = "rtlinkFile <- '" + str(gageMeta.rtLnk) + "'\n"
         fileObj.write(inStr)
-        inStr = "linkId <- " + str(gageMeta.comID) + "\n"
+        if gageMeta.gage == "11224000":
+            inStr = "linkId <- 17112805\n"
+        else:
+            inStr = "linkId <- " + str(gageMeta.comID) + "\n"
         fileObj.write(inStr)
         fileObj.write('# Start date for evaluation period (e.g., after spinup period)\n')
         inStr = "startDate <- as.POSIXct(\"" + jobData.bCalibEvalDate.strftime('%Y-%m-%d') + "\", " + \

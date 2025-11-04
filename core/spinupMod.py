@@ -141,10 +141,10 @@ def runModel(statusData,staticData,db,gageID,gage,keySlot,basinNum,pbsJobId):
     if os.path.isfile(rstFile):
         os.remove(rstFile)
 
-    #try:
-    #    generateMpiScript(statusData,int(gageID),int(basinNum),runDir,gageMeta)
-    #except:
-    #    raise
+    try:
+        generateMpiScript(statusData,int(gageID),int(basinNum),runDir,gageMeta)
+    except:
+        raise
     #if statusData.jobRunType == 1:
     #    # If BSUB run script doesn't exist, create it here.
     #    bsubFile = runDir + "/run_WH.sh"
@@ -160,21 +160,21 @@ def runModel(statusData,staticData,db,gageID,gage,keySlot,basinNum,pbsJobId):
     #            generatePbsScript(statusData,int(gageID),runDir,gageMeta)
     #        except:
     #            raise
-    if statusData.jobRunType == 3 or statusData.jobRunType == 6:
-        slurmFile = runDir + "/run_WH.sh"
-        if not os.path.isfile(slurmFile):
-            try:
-                generateSlurmScript(statusData,int(gageID),runDir,gageMeta)
-            except:
-                raise
-    if statusData.jobRunType == 4 or statusData.jobRunType == 5:
-        # If run script doesn't exist, create it here.
-        runScript = runDir + "/run_WH.sh"
-        if not os.path.isfile(runScript):
-            try:
-                generateMpiScript(statusData,int(gageID),runDir,gageMeta)
-            except:
-                raise
+    #if statusData.jobRunType == 3 or statusData.jobRunType == 6:
+    #    slurmFile = runDir + "/run_WH.sh"
+    #    if not os.path.isfile(slurmFile):
+    #        try:
+    #            generateSlurmScript(statusData,int(gageID),runDir,gageMeta)
+    #        except:
+    #            raise
+    #if statusData.jobRunType == 4 or statusData.jobRunType == 5:
+    #    # If run script doesn't exist, create it here.
+    #    runScript = runDir + "/run_WH.sh"
+    #    if not os.path.isfile(runScript):
+    #        try:
+    #            generateMpiScript(statusData,int(gageID),runDir,gageMeta)
+    #        except:
+    #            raise
 
     # Calculate datetime objects
     begDate = statusData.bSpinDate
@@ -381,14 +381,14 @@ def runModel(statusData,staticData,db,gageID,gage,keySlot,basinNum,pbsJobId):
                 raise
                 
         # Fire off model.
-        #cmd = runDir + "/run_WH.sh 1>" + runDir + "/WH_" + \
-        #      str(statusData.jobID) + "_" + str(gageID) + ".out" + \
-        #      ' 2>' + runDir + "/WH_" + str(statusData.jobID) + "_" + str(gageID) + ".err"
-        #try:
-        #    p = subprocess.Popen([cmd], shell=True)
-        #except:
-        #    statusData.errMsg = "ERROR: Unable to launch WRF-Hydro job for gage: " + str(gageMeta.gage[basinNum])
-        #    raise
+        cmd = runDir + "/run_WH.sh 1>" + runDir + "/WH_" + \
+              str(statusData.jobID) + "_" + str(gageID) + ".out" + \
+              ' 2>' + runDir + "/WH_" + str(statusData.jobID) + "_" + str(gageID) + ".err"
+        try:
+            p = subprocess.Popen([cmd], shell=True)
+        except:
+            statusData.errMsg = "ERROR: Unable to launch WRF-Hydro job for gage: " + str(gageMeta.gage[basinNum])
+            raise
         #if statusData.jobRunType == 1:
         #    cmd = "bsub < " + runDir + "/run_WH.sh"
         #if statusData.jobRunType == 2:
@@ -398,20 +398,20 @@ def runModel(statusData,staticData,db,gageID,gage,keySlot,basinNum,pbsJobId):
         #    except:
         #        statusData.errMsg = "ERROR: Unable to launch WRF-Hydro job for gage: " + str(gageMeta.gage[basinNum])
         #        raise
-        if statusData.jobRunType == 3 or statusData.jobRunType == 6:
-            cmd = "sbatch " + runDir + "/run_WH.sh"
-        if statusData.jobRunType == 4 or statusData.jobRunType == 5:
-            cmd = runDir + "/run_WH.sh 1>" + runDir + "/WH_" + \
-                  str(statusData.jobID) + "_" + str(gageID) + ".out" + \
-                  ' 2>' + runDir + "/WH_" + str(statusData.jobID) + "_" + str(gageID) + ".err"
-        try:
-            if statusData.jobRunType == 1 or statusData.jobRunType == 3 or statusData.jobRunType == 6:
-                subprocess.call(cmd,shell=True)
-            if statusData.jobRunType == 4 or statusData.jobRunType == 5:
-                p = subprocess.Popen([cmd],shell=True)
-        except:
-            statusData.errMsg = "ERROR: Unable to launch WRF-Hydro job for gage: " + str(gageMeta.gage[basinNum])
-            raise
+        #if statusData.jobRunType == 3 or statusData.jobRunType == 6:
+        #    cmd = "sbatch " + runDir + "/run_WH.sh"
+        #if statusData.jobRunType == 4 or statusData.jobRunType == 5:
+        #    cmd = runDir + "/run_WH.sh 1>" + runDir + "/WH_" + \
+        #          str(statusData.jobID) + "_" + str(gageID) + ".out" + \
+        #          ' 2>' + runDir + "/WH_" + str(statusData.jobID) + "_" + str(gageID) + ".err"
+        #try:
+        #    if statusData.jobRunType == 1 or statusData.jobRunType == 3 or statusData.jobRunType == 6:
+        #        subprocess.call(cmd,shell=True)
+        #    if statusData.jobRunType == 4 or statusData.jobRunType == 5:
+        #        p = subprocess.Popen([cmd],shell=True)
+        #except:
+        #    statusData.errMsg = "ERROR: Unable to launch WRF-Hydro job for gage: " + str(gageMeta.gage[basinNum])
+        #    raise
             
         # Revert statuses to -0.5 for next loop to convey the model crashed once. 
         keyStatus = -0.5
@@ -465,20 +465,20 @@ def runModel(statusData,staticData,db,gageID,gage,keySlot,basinNum,pbsJobId):
         #    except:
         #        statusData.errMsg = "ERROR: Unable to launch WRF-Hydro job for gage: " + str(gageMeta.gage[basinNum])
         #        raise
-        if statusData.jobRunType == 3 or statusData.jobRunType == 6:
-            cmd = "sbatch " + runDir + "/run_WH.sh"
-        if statusData.jobRunType == 4 or statusData.jobRunType == 5:
-            cmd = runDir + "/run_WH.sh 1>" + runDir + "/WH_" + \
-                  str(statusData.jobID) + "_" + str(gageID) + ".out" + \
-                  ' 2>' + runDir + "/WH_" + str(statusData.jobID) + "_" + str(gageID) + ".err"
-        try:
-            if statusData.jobRunType == 1 or statusData.jobRunType == 3 or statusData.jobRunType == 6:
-                subprocess.call(cmd,shell=True)
-            if statusData.jobRunType == 4 or statusData.jobRunType == 5:
-                p = subprocess.Popen([cmd],shell=True)
-        except:
-            statusData.errMsg = "ERROR: Unable to launch WRF-Hydro job for gage: " + str(gageMeta.gage[basinNum])
-            raise
+        #if statusData.jobRunType == 3 or statusData.jobRunType == 6:
+        #    cmd = "sbatch " + runDir + "/run_WH.sh"
+        #if statusData.jobRunType == 4 or statusData.jobRunType == 5:
+        #    cmd = runDir + "/run_WH.sh 1>" + runDir + "/WH_" + \
+        #          str(statusData.jobID) + "_" + str(gageID) + ".out" + \
+        #          ' 2>' + runDir + "/WH_" + str(statusData.jobID) + "_" + str(gageID) + ".err"
+        #try:
+        #    if statusData.jobRunType == 1 or statusData.jobRunType == 3 or statusData.jobRunType == 6:
+        #        subprocess.call(cmd,shell=True)
+        #    if statusData.jobRunType == 4 or statusData.jobRunType == 5:
+        #        p = subprocess.Popen([cmd],shell=True)
+        #except:
+        #    statusData.errMsg = "ERROR: Unable to launch WRF-Hydro job for gage: " + str(gageMeta.gage[basinNum])
+        #    raise
             
         keyStatus = 0.5
         keySlot[basinNum] = 0.5

@@ -26,6 +26,8 @@ source(namelistFile)
 #metrics_snow <-  c("cor", "rmse", "bias", "nse", "nselog", "nsewt", "nnsesq","nnse", "kge")
 metrics <- c("cor", "rmse", "bias", "nse", "nselog", "nsewt","nnse","nnsesq","kge", "msof", "hyperResMultiObj", "eventmultiobj","peak_bias","peak_tm_err_hr","event_volume_bias",
              "POD", "FAR", "CSI", "corr1", "lbem", "lbemprime") # Xia 20210610
+metrics <- c("cor", "rmse", "bias", "nse", "nselog", "nsewt","nnse","nnsesq","kge", "msof", "hyperResMultiObj",
+             "corr1", "lbem", "lbemprime")
 metrics_streamflow <- metrics
 event_metrics_daily<-data.table(eventmultiobj=-9999, peak_bias=-9999, peak_tm_err_hr=-9999, event_volume_bias=-9999) # Xia 20210610
 metrics_snow <-  c("cor", "rmse", "bias", "nse", "kge") # Xia 20200610

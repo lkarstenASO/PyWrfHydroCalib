@@ -171,7 +171,7 @@ class jobMeta:
         self.output_channelBucket_influx = []
         self.s3Client = None
         self.outBucket = "aso-wrf-hydro"
-        self.s3TopOutDir = "Development/2025_RnD/CA_DWR_Calibration/Output"
+        self.s3TopOutDir = None
 
     def checkGages2(self,db):
         #Function to extract domain ID values based on the SQL command placed into the
@@ -254,6 +254,7 @@ class jobMeta:
         self.nCoresMod = int(parser.get('logistics','nCoresModel'))
         self.nNodesMod = int(parser.get('logistics','nNodesModel'))
         self.nCoresPerNode = int(parser.get('logistics','nCoresPerNode'))
+        self.s3TopOutDir = str(parser.get('logistics','s3OutDir'))
         self.mpiCmd = str(parser.get('logistics','mpiCmd'))
         self.cpuPinCmd = str(parser.get('logistics','cpuPinCmd'))
         self.ldPath = str(parser.get('logistics','optLDPath'))
@@ -541,13 +542,27 @@ def checkConfig(parser):
         print("ERROR: Zero length output directory provided.")
         raise Exception()
     if not os.path.isdir(check):
-        print("ERROR: Directory: " + check + " not found.")
+        print("ERROR: Expected Directory: " + check + " not found.")
         raise Exception()
 
     check = str(parser.get('logistics','expName'))
     if len(check) == 0:
         print("ERROR: Zero length expName provided.")
         raise Exception()
+    
+    # Create our subdirectories for our experiment. 
+    #expDir1 = str(parser.get('logistics','outDir')) + "/" + str(parser.get('logistics','expName'))
+    #try:
+    #    os.mkdir(expDir1)
+    #except:
+    #    print("ERROR: Unable to create directory: " + expDir1)
+    #    raise Exception()
+    #expDir2 = expDir1 + "/output"
+    #try:
+    #    os.mkdir(expDir2)
+    #except:
+    #    print("ERROR: Unable to create directory: " + expDir2)
+    #    raise Exception()
         
     check = str(parser.get('logistics','acctKey'))
     if len(check) == 0:

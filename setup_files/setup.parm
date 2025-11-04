@@ -27,6 +27,7 @@ optQueName = main
 nCoresModel = 9
 nNodesModel = 1
 nCoresPerNode = 36
+s3OutDir = Development_WY2026/Calibration/output
 
 # Flag to turn sensitivity analysis on: 0 - Off, 1 - On.
 runSens = 0 
