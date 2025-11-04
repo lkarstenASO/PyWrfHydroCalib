@@ -42,6 +42,7 @@ import sys
 import pandas as pd
 from netCDF4 import Dataset
 import sqlite3
+import shutil
 
 #import warnings
 #warnings.filterwarnings("ignore")
@@ -223,6 +224,16 @@ def main(argv):
         if not os.path.isdir(obsDir):
             print("ERROR: " + obsDir + " not found.")
             sys.exit(1)
+        # Make sure we have an observation file. If there's a file named by the gage ID, make a copy
+        # that the calibration workflow will see. 
+        tmpPath1 = obsDir + "/" + siteNo + ".Rdata"
+        tmpPath2 = obsDir + "/obsStrData.Rdata"
+        if not os.path.isfile(tmpPath2):
+            if not os.path.isfile(tmpPath1):
+                print("ERROR: No observations file found in: " + obsDir)
+                sys.exit(-1)
+            else:
+                shutil.copy(tmpPath1,tmpPath2)
         if not os.path.isfile(gwMskPath):
             print("WARNING: " + gwMskPath + " not found. Assuming you are running NWM routing....")
             gwMskPath = "-9999"

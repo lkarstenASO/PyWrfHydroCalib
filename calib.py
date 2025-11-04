@@ -37,9 +37,7 @@ def main(argv):
              'calibration for WRF-Hydro')
     parser.add_argument('jobID',metavar='jobID',type=str,nargs='+',
                         help='Job ID specific to calibration calibration.')
-    #parser.add_argument('groupNum',metavar='groupNum',type=str,nargs='+',
-    #                    help='Group number associated with basins to calibrate.')
-    parser.add_argument('groupNum',metavar='groupNum',type=str,nargs='?',
+    parser.add_argument('groupNum',metavar='groupNum',type=str,nargs='+',
                         help='Group number associated with basins to calibrate.')
     parser.add_argument('--optDbPath',type=str,nargs='?',
                         help='Optional alternative path to SQLite DB file.')
@@ -172,11 +170,10 @@ def main(argv):
         errMod.errOut(jobData)
 
     # Calculate the CPU/group layout for all basins.
-    if len(args.groupNum[0]) == 0:
-        try:
-            jobData.calcGroupNum()
-        except:
-            errMod.errOut(jobData)
+    try:
+        jobData.calcGroupNum()
+    except:
+        errMod.errOut(jobData)
     
     # Some house keeping here. If the calibration is already complete, throw an error. 
     # Also ensure the spinup has been entered as complete. This is necessary for the 
@@ -366,10 +363,9 @@ def main(argv):
             for iteration in range(0,int(jobData.nIter)):
                 # Only process basins that are part of this group, per the argument passed into the
                 # program.
-                if len(args.groupNum[0]) == 0:
-                    if jobData.gageGroup[basin] != int(args.groupNum[0]):
-                        keySlot[basin,iteration] = 1.0
-                        continue
+                if jobData.gageGroup[basin] != int(args.groupNum[0]):
+                    keySlot[basin,iteration] = 1.0
+                    continue
                 basCount += 1
                 print("PROCESSING ITERATION: " + str(iteration))
                 # Holding onto the status value before the workflow iterates for checking below.
