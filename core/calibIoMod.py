@@ -1284,7 +1284,8 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
                                             Bucket=staticData.outBucket,
-                                            Key=cloudPath)
+                                            Key=cloudPath,
+                                            ExtraArgs={'ContentType': 'image/png'})
         except:
             print("Unable to upload: " + localPath + " to: " + cloudPath)
             return
@@ -1295,7 +1296,8 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
                                             Bucket=staticData.outBucket,
-                                            Key=cloudPath)
+                                            Key=cloudPath,
+                                            ExtraArgs={'ContentType': 'image/png'})
         except:
             print("Unable to upload: " + localPath + " to: " + cloudPath)
             return
@@ -1306,7 +1308,8 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
                                             Bucket=staticData.outBucket,
-                                            Key=cloudPath)
+                                            Key=cloudPath,
+                                            ExtraArgs={'ContentType': 'image/png'})
         except:
             print("Unable to upload: " + localPath + " to: " + cloudPath)
             return
@@ -1317,7 +1320,8 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
                                             Bucket=staticData.outBucket,
-                                            Key=cloudPath)
+                                            Key=cloudPath,
+                                            ExtraArgs={'ContentType': 'image/png'})
         except:
             print("Unable to upload: " + localPath + " to: " + cloudPath)
             return
@@ -1328,7 +1332,8 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
                                             Bucket=staticData.outBucket,
-                                            Key=cloudPath)
+                                            Key=cloudPath,
+                                            ExtraArgs={'ContentType': 'image/png'})
         except:
             print("Unable to upload: " + localPath + " to: " + cloudPath)
             return
@@ -1339,7 +1344,8 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
                                             Bucket=staticData.outBucket,
-                                            Key=cloudPath)
+                                            Key=cloudPath,
+                                            ExtraArgs={'ContentType': 'image/png'})
         except:
             print("Unable to upload: " + localPath + " to: " + cloudPath)
             return
@@ -1350,7 +1356,8 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
                                             Bucket=staticData.outBucket,
-                                            Key=cloudPath)
+                                            Key=cloudPath,
+                                            ExtraArgs={'ContentType': 'image/png'})
         except:
             print("Unable to upload: " + localPath + " to: " + cloudPath)
             return
@@ -1361,7 +1368,8 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
                                             Bucket=staticData.outBucket,
-                                            Key=cloudPath)
+                                            Key=cloudPath,
+                                            ExtraArgs={'ContentType': 'image/png'})
         except:
             print("Unable to upload: " + localPath + " to: " + cloudPath)
             return
@@ -1372,7 +1380,8 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
                                             Bucket=staticData.outBucket,
-                                            Key=cloudPath)
+                                            Key=cloudPath,
+                                            ExtraArgs={'ContentType': 'image/png'})
         except:
             print("Unable to upload: " + localPath + " to: " + cloudPath)
             return
@@ -1383,7 +1392,8 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
                                             Bucket=staticData.outBucket,
-                                            Key=cloudPath)
+                                            Key=cloudPath,
+                                            ExtraArgs={'ContentType': 'image/png'})
         except:
             print("Unable to upload: " + localPath + " to: " + cloudPath)
             return
@@ -1394,7 +1404,8 @@ def calibOutputS3Upload(gageName,staticData,gageMeta,workDir):
         try:
             staticData.s3Client.upload_file(Filename=localPath,
                                             Bucket=staticData.outBucket,
-                                            Key=cloudPath)
+                                            Key=cloudPath,
+                                            ExtraArgs={'ContentType': 'image/png'})
         except:
             print("Unable to upload: " + localPath + " to: " + cloudPath)
             return
